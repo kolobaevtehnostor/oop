@@ -39,6 +39,6 @@ interface LifeFormInterface
     public function getStateChangeTypes(): array;
 
     /** Получить идинтификацию */
-    public function getIdentity(): IdentityInterface;
+    public static function getIdentity(string $name, int $volume): IdentityInterface;
 
 }

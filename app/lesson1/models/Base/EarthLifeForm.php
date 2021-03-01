@@ -9,7 +9,6 @@ use App\Models\StateTypes\Base\StateChangeType;
 use App\Models\RegenerationTypes\Base\RegenerationType;
 use App\Models\Base\TypeInterface;
 
-
 abstract class EarthLifeForm implements PlanetInterface, LifeFormInterface, IdentityInterface
 {
     protected $name;
@@ -18,14 +17,13 @@ abstract class EarthLifeForm implements PlanetInterface, LifeFormInterface, Iden
     protected $isState;
     protected $hasId;
 
-    function __construct(string $name, int $volume = 0, bool $isRegenerate = true, bool $isState = true) 
+    public function __construct(string $name, int $volume, bool $isRegenerate, bool $isState) 
     {
         $this->name = $name;
         $this->volume = $volume;
         $this->isRegenerate = $isRegenerate;
         $this->isState = $isState;
         $this->hasId = isset($name) ? true : false;
-        //static::$count++;
     }
 
     public function getId(): string
@@ -53,9 +51,24 @@ abstract class EarthLifeForm implements PlanetInterface, LifeFormInterface, Iden
        return $this->volume;
     }
 
-    public function getIdentity(): IdentityInterface
+    /**
+     * Именной конструктор
+     *
+     * @return IdentityInterface
+     */
+    public static function getIdentity(string $name, int $volume = 0): IdentityInterface
     {
+        return new static($name, $volume, true, true);
+    }
 
+    /**
+     * Именной конструктор
+     *
+     * @return IdentityInterface
+     */
+    public static function getIdentityNotState(string $name, int $volume = 0): IdentityInterface
+    {
+        return new static($name, $volume, true, false);
     }
 
     public function getValidatedArrayGetterTypes(array $getterTypes): array

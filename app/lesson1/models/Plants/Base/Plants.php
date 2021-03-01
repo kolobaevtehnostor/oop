@@ -19,12 +19,14 @@ abstract class Plants extends EarthLifeForm
     public function getStateChangeTypes(): array
     {
         $growing = new Growing();
+
         return [$growing];
     }
 
     public function getRegenerationTypes(): array
     {
         $budding = new Budding();
+        
         return [$budding];
     }
 }
