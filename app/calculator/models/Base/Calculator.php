@@ -5,6 +5,7 @@ namespace App\Calculator\Models\Base;
 
 use App\Calculator\Models\InfoTotalResult\Base\InfoTotalResult;
 use App\Calculator\Models\Grid;
+use App\Calculator\Requests\CreditRequest;
 
 abstract class Calculator
 {
@@ -28,15 +29,19 @@ abstract class Calculator
         $this->annualInterestRate = $annualInterestRate;
     }
 
-    public static function getIdentity(int $amount, int $period, int $downPayment): ?self
+    public static function getIdentity(CreditRequest $creditRequest): ?self
     {
+        $amount = $creditRequest->getAttribute(CreditRequest::ATTRIBUTE_TOTAL_AMOUNT);
+        $period = $creditRequest->getAttribute(CreditRequest::ATTRIBUTE_PERIOD);
+        $downPayment = $creditRequest->getAttribute(CreditRequest::ATTRIBUTE_INITIAL_FEE);
+
         $grid = new Grid($amount, $period, $downPayment);
         
         if ( $grid->getPercent() < 0)
         {
             return null;
         }
-                
+        
         $annualInterestRate = $grid->getPercent();
 
         return new static($amount, $period, $downPayment, $annualInterestRate);

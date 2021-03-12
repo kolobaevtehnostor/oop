@@ -1,3 +1,6 @@
+<?php
+    use App\Calculator\Requests\CreditRequest;
+?>
 
 <html lang="ru">
     <head>
@@ -34,15 +37,15 @@
                         <div class="row">
                             <div class="col-md-4 mb-4">
                                 <label for="amount">Сумма, рублей</label>
-                                <input type="text" class="form-control" id="amount-loan" placeholder="" amount value="100000" required="">
+                                <input type="number" class="form-control" id="amount-loan" placeholder="" amount value="100000" required="">
                             </div>
                             <div class="col-md-4 mb-4">
                                 <label for="period">Период, месяцев</label>
-                                <input type="text" class="form-control" id="period-loan" placeholder="" period value="6" required="">
+                                <input type="number" class="form-control" id="period-loan" placeholder="" period value="6" required="">
                             </div>
                             <div class="col-md-4 mb-4">
                                 <label for="downPayment">Первоначальный взнос</label>
-                                <input type="text" class="form-control" id="downPayment-loan" placeholder="" down-payment value="0" required="">
+                                <input type="number" class="form-control" id="downPayment-loan" placeholder="" down-payment value="0" required="">
                             </div>
                         </div>
                     </form>
@@ -64,15 +67,15 @@
                         <div class="row">
                             <div class="col-md-4 mb-4">
                                 <label for="amount">Сумма, рублей</label>
-                                <input type="text" class="form-control" id="amount-installment" amount placeholder="" value="100000" required="">
+                                <input type="number" class="form-control" id="amount-installment" amount placeholder="" value="100000" required="">
                             </div>
                             <div class="col-md-4 mb-4">
                                 <label for="period">Период, месяцев</label>
-                                <input type="text" class="form-control" id="period-installment" period placeholder="" value="6" required="">
+                                <input type="number" class="form-control" id="period-installment" period placeholder="" value="6" required="">
                             </div>
                             <div class="col-md-4 mb-4">
                                 <label for="downPayment">Первоначальный взнос</label>
-                                <input type="text" class="form-control" id="downPayment-installment" down-payment placeholder="" value="0" required="">
+                                <input type="number" class="form-control" id="downPayment-installment" down-payment placeholder="" value="0" required="">
                             </div>
                         </form>
                     </div>
@@ -112,9 +115,9 @@ $( document ).ready(function() {
             postData: function(type) {
                 let id = $(attributes.inputId).val();
                 $.post( 'http://oop.lan/?c=calculator&a=calculate', { 
-                    amount: this.getInput(attributes.amount),
+                    totalAmount: this.getInput(attributes.amount),
                     period: this.getInput(attributes.period),
-                    downPayment: this.getInput(attributes.downPayment),
+                    initialFee: this.getInput(attributes.downPayment),
                     typeCalculator: type,
                     annualInterestRate: "4.71" 
                 }).done(callBackActions.onResponseDone);
