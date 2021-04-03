@@ -78,7 +78,7 @@ class CreditRequest
             return $default;
         }
 
-        return $this->attributes[$key];
+        return $this->attributes;
     }
     
 }
