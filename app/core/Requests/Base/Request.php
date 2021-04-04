@@ -37,6 +37,7 @@ class Request
     public function getAttribute(string $key, $default = null) 
     {
         if (! isset($this->data[$key])) {
+            
             return $default;
         }
 

@@ -4,6 +4,8 @@ namespace App\Core\Routers;
 
 use App\Core\Routers\Base\MainRouter;
 use App\Controllers\CalculatorController;
+use App\Middleware\Only555Id;
+use App\Middleware\AdminOnlyMiddleWare;
 
 class Router extends MainRouter
 {
@@ -19,9 +21,13 @@ class Router extends MainRouter
                 'controller' => CalculatorController::class,
                 'action'    => 'show',
                 'middleware' => [
-               //     AdminOnlyMiddleWare::class,
-               //     Only555Id::class,
+                    AdminOnlyMiddleWare::class,
+                    Only555Id::class,
                 ],
+            ],
+            '/index.php/calculator/calculate' => [
+                'controller' => CalculatorController::class,
+                'action'    => 'calculate',
             ],
         ];
     }

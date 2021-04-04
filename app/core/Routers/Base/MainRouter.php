@@ -41,9 +41,12 @@ abstract class MainRouter
         }
 
         try {
+            if (isset ($controllerConfig['middleware'])) {
 
-            foreach ($controllerConfig['middleware'] as $middleware) {
-                (new $middleware)->handle($request);
+                foreach ($controllerConfig['middleware'] as $middleware) {
+                    
+                    (new $middleware)->handle($request);
+                }
             }
             
             $controller = new $controllerConfig['controller'];
@@ -59,7 +62,7 @@ abstract class MainRouter
             
         }
 
-        return $result;
+        return (string) $result;
     }
 
     /**

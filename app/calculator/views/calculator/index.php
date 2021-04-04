@@ -114,7 +114,7 @@ $( document ).ready(function() {
             },
             postData: function(type) {
                 let id = $(attributes.inputId).val();
-                $.post( 'http://oop.lan/?c=calculator&a=calculate', { 
+                $.post( '/index.php/calculator/calculate', { 
                     totalAmount: this.getInput(attributes.amount),
                     period: this.getInput(attributes.period),
                     initialFee: this.getInput(attributes.downPayment),
