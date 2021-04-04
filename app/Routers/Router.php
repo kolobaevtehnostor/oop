@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Routers;
+namespace App\Routers;
 
-use App\Core\Routers\Base\MainRouter;
+use App\Core\Routers\Base\BaseRouter;
 use App\Controllers\CalculatorController;
 use App\Middleware\Only555Id;
 use App\Middleware\AdminOnlyMiddleWare;
 
-class Router extends MainRouter
+class Router extends BaseRouter
 {
     /**
      * Правила роутов

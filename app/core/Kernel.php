@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use App\Core\Routers\Router;
+use App\Routers\Router;
 use App\Core\Response;
 use App\Core\Requests\Base\Request;
 use App\Exceptions\ErrorHandler;

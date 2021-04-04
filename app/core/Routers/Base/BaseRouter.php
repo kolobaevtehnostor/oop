@@ -5,7 +5,7 @@ namespace App\Core\Routers\Base;
 use App\Core\Requests\Base\Request;
 use App\Core\Response;
 
-abstract class MainRouter
+abstract class BaseRouter
 {
 
     /**
