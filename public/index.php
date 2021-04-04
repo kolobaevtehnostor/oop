@@ -18,10 +18,5 @@ $response = $kernel->handle($request);
 
 $response->send();
 
-/*
-echo '<pre>';
-var_dump($kernel);
-echo ' </pre>';
-
 
 
