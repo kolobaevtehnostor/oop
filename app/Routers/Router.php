@@ -6,6 +6,7 @@ use App\Core\Routers\Base\BaseRouter;
 use App\Controllers\CalculatorController;
 use App\Middleware\Only555Id;
 use App\Middleware\AdminOnlyMiddleWare;
+use App\Config\Routes;
 
 class Router extends BaseRouter
 {
@@ -16,6 +17,9 @@ class Router extends BaseRouter
      */
     public function rules(): array
     {
+        return ;
+
+        /*
         return [
             '/index.php/calculator' => [
                 'controller' => CalculatorController::class,
@@ -30,6 +34,7 @@ class Router extends BaseRouter
                 'action'    => 'calculate',
             ],
         ];
+        */
     }
 
 }

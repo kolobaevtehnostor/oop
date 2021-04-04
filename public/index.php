@@ -23,13 +23,5 @@ echo '<pre>';
 var_dump($kernel);
 echo ' </pre>';
 
-/*
-$kernel = new Kernel($router);
-
-$request = new Request();
-
-$response = $kernel->handle($request);
-
-$response->send();
 
 

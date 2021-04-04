@@ -12,6 +12,8 @@ class Kernel
     public function __construct(Router $router)
     {
         $this->router = $router;
+        
+        new Routes();
     }
     
     protected function dispatchByRouter(Request $request): Response

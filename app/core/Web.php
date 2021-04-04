@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Calculator;
+namespace App\Core;
 
 class Web {
 
     private static $instance;
 
-    protected static $config = [
-        'pathController' => 'App\\Calculator\\Controllers\\'
-    ];
+    protected static $config = [];
+    protected static $routs = [];
 
     /**
      * Конструктор Одиночки всегда должен быть скрытым, чтобы предотвратить
@@ -44,28 +43,37 @@ class Web {
         return self::$instance;
     }
 
-    
+    /**
+     * Получает конфиг
+     *
+     * @param string $key
+     * @return void
+     */
     public static function getConfig(string $key)
     {
         return static::$config[$key];
     }
 
     /**
-     * Запускает action
-     * из контроллера
+     * Записывает роуты
      *
-     * @param string $controllerName
+     * @param string $link
+     * @param string $controller
      * @param string $action
+     * @param array $middleware
      * @return void
      */
-    public function startApp($controllerName = '', $action = ''): void
+    public function setRouts(
+        string $link,
+        string $controller,
+        string $action,
+        array  $middleware): void
     {
-        $controllerName = ucfirst($controllerName) . 'Controller';
-        $useController = Web::getConfig('pathController') . $controllerName;
-
-        $controller = new $useController();
-        
-        $controller->$action();
+        static::$config[$link] = [
+            'controller' => $controller,
+            'action'     => $action,
+            'middleware' => $middleware,
+        ];
     }
 
 } 
