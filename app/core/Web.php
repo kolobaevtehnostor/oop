@@ -63,17 +63,22 @@ class Web {
      * @param array $middleware
      * @return void
      */
-    public function setRouts(
+    public static function setRoute(
         string $link,
         string $controller,
         string $action,
-        array  $middleware): void
+        array  $middleware = []): void
     {
         static::$config[$link] = [
             'controller' => $controller,
             'action'     => $action,
             'middleware' => $middleware,
         ];
+    }
+
+    public static function getRouts(): array
+    {
+        return static::$config;
     }
 
 } 

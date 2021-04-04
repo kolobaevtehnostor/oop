@@ -7,6 +7,7 @@ use App\Controllers\CalculatorController;
 use App\Middleware\Only555Id;
 use App\Middleware\AdminOnlyMiddleWare;
 use App\Config\Routes;
+use App\Core\Web;
 
 class Router extends BaseRouter
 {
@@ -17,7 +18,7 @@ class Router extends BaseRouter
      */
     public function rules(): array
     {
-        return ;
+        return Web::getRouts();
 
         /*
         return [

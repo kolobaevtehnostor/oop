@@ -6,6 +6,7 @@ use App\Routers\Router;
 use App\Core\Response;
 use App\Core\Requests\Base\Request;
 use App\Exceptions\ErrorHandler;
+use App\Config\Routes;
 
 class Kernel
 {
@@ -13,7 +14,7 @@ class Kernel
     {
         $this->router = $router;
         
-        new Routes();
+        $routes = new Routes();
     }
     
     protected function dispatchByRouter(Request $request): Response
