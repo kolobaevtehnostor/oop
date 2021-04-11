@@ -10,17 +10,16 @@ use App\Config\Routes;
 
 class Kernel
 {
+    protected $router;
+
     public function __construct(Router $router)
     {
         $this->router = $router;
-        
-        $routes = new Routes();
     }
     
     protected function dispatchByRouter(Request $request): Response
     {
         try {
-
             return $this->router->dispatch($request);
             
         } catch (\Throwable $error) {

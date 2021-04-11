@@ -2,17 +2,9 @@
 
 namespace App\Core;
 
-class Response
+use App\Core\Responses\Base\BaseResponse;
+
+class Response extends BaseResponse
 {
-    protected $data;
-    
-    public function setData(string $data)
-    {
-        $this->data = $data;
-    }
-    
-    public function send(): void
-    {
-        echo $this->data;
-    }
+
 }

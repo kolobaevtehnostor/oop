@@ -9,7 +9,7 @@ class AdminOnlyMiddleWare
 {
     public function handle(Request $request)
     {
-        if ((string) $request->getParam('userRole') !== 'Admin') {
+        if ((string) $request->get('userRole') !== 'Admin') {
             throw new BadRequestException('Вы должны быть администратором системы!');
         }
     }

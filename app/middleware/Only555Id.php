@@ -9,7 +9,8 @@ class Only555Id
 {
     public function handle(Request $request)
     {
-        if ((int) $request->getParam('id') !== 555) {
+
+        if ((int) $request->get('id') !== 555) {
             throw new NotFoundException('Не указан правильный id');
         }
     }

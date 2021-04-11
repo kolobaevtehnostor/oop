@@ -4,6 +4,7 @@ namespace App\Core\Routers\Base;
 
 use App\Core\Requests\Base\Request;
 use App\Core\Response;
+use App\Core\Responses\JsonResponse;
 
 abstract class BaseRouter
 {
@@ -13,7 +14,7 @@ abstract class BaseRouter
      *
      * @return array
      */
-    abstract protected function rules(): array;
+    abstract protected function routes(): array;
 
     /**
      * Отправляет ответ
@@ -25,19 +26,27 @@ abstract class BaseRouter
         $result = $this->getResult($request);
 
         $response = new Response();
+
+        if ($result instanceof JsonResponse) {
+
+            $response->setHeader('Content-Type', 'application/json');
+            $response->setData($result->getData());
+
+            return $response;
+        }
+
         $response->setData($result);
         
         return $response;
     }
 
-
-    protected function getResult(Request $request): string
+    protected function getResult(Request $request)
     {
-        $rules = $this->rules();
+        $routes = $this->routes();
 
-        if ($this->validationUrl($request->getUrl(), $rules)) {
+        if ($this->validationUrl($request->server('PHP_SELF'), $routes)) {
 
-            $controllerConfig = $rules[$request->getUrl()];
+            $controllerConfig = $routes[$request->server('PHP_SELF')];
         }
 
         try {
@@ -51,8 +60,8 @@ abstract class BaseRouter
             
             $controller = new $controllerConfig['controller'];
             $action = $controllerConfig['action'];
-            
             $result = $this->handleControllerAction($controller, $action, $request);
+
             
         } catch (\HttpException $error) {
             
@@ -62,7 +71,7 @@ abstract class BaseRouter
             
         }
 
-        return (string) $result;
+        return $result;
     }
 
     /**
@@ -71,11 +80,9 @@ abstract class BaseRouter
      * @return boolean
      * @throws NotFoundException
      */
-    protected function validationUrl(string $url, array $rules): bool
+    protected function validationUrl(string $url, array $routes): bool
     {
-        $rules = $this->rules();
-
-        if (! array_key_exists($url, $rules)) {
+        if (! array_key_exists($url, $routes)) {
 
             throw new \Exception('Класс контроллера не найден');
         }
@@ -88,8 +95,8 @@ abstract class BaseRouter
      *
      * @return void
      */
-    protected function handleControllerAction($controller, $action, $request)
+    protected function handleControllerAction($controller, $action, $request) // : bool
     {
-        $result = $controller->{$action}($request);
+      return $controller->{$action}($request);
     }
 }

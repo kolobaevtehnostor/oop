@@ -5,7 +5,7 @@ namespace App\Calculator\Models\Base;
 
 use App\Calculator\Models\InfoTotalResult\Base\InfoTotalResult;
 use App\Calculator\Models\Grid;
-use App\Calculator\Requests\CreditRequest;
+use App\Requests\CreditRequest;
 
 abstract class Calculator
 {

@@ -4,55 +4,138 @@ namespace App\Core\Requests\Base;
 
 class Request
 {
-    protected $data = [];
+    protected static $instance;
+    
+    protected $serverAttributes = [];
 
-    protected $allowAttributes = [];
+    protected $getAttributes = [];
 
-    public function __construct(array $data) 
+    protected $postAttributes = [];
+
+    public function __construct(array $serverData, $getQuery, $postBody) 
     {
-        $this->load($data);
+        $this->serverAttributes = $serverData;
+
+        $this->getAttributes = $getQuery;
+
+        $this->postAttributes = $postBody;
+
+        self::$instance = $this;
     }
 
     /**
-     * Заполняет данные из запроса
-     *
-     * @return void
-     */
-    protected function load(array $data): void
-    {
-        foreach ($this->allowAttributes as $value) {
-
-            if (array_key_exists($value, $data)) {
-                $this->data[$value] = $data[$value];
-            }
-        }
-    }
-
-    /**
-     * Возвращает атрибут
-     * 
-     * @param string $key
      * @return mixed
      */
-    public function getAttribute(string $key, $default = null) 
+    public function server(string $attributeName, $default = null)
     {
-        if (! isset($this->data[$key])) {
+        if ($this->isByServer($attributeName)) {
+
+            return $this->serverAttributes[$attributeName];
+        }
+
+        return $default;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get(string $attributeName, $default = null)
+    {
+        if (! $this->isGet()) {
             
             return $default;
         }
 
-        return $this->data[$key];
+        if (! $this->isByGet($attributeName)) {
+            
+            return $default;
+        }
+
+        return $this->getAttributes[$attributeName];
     }
 
     /**
-     * Возвращает атрибуты
-     * 
-     * @param string $key
      * @return mixed
      */
-    public function getData() 
+    public function post(string $attributeName, $default = null)
     {
+        if (! $this->isPost()) {
+            
+            return $default;
+        }
 
-        return $this->data;
+        if (! $this->isByPost($attributeName)) {
+
+            return $default;
+        }
+        
+        return $this->postAttributes[$attributeName];
     }
+
+    /**
+     * Есть ли get
+     *
+     * @return boolean
+     */
+    public function isGet(): bool
+    {
+        return (bool) count($this->getAttributes);
+    }
+
+    /**
+     * Есть ли post
+     *
+     * @return boolean
+     */
+    public function isPost(): bool
+    {
+        return (bool) count($this->postAttributes);
+    }
+
+    /**
+     * Проверяет присутствие в get
+     *
+     * @param string $attributeName
+     * @return boolean
+     */
+    public function isByGet(string $attributeName): bool
+    {
+        return isset($this->getAttributes[$attributeName]);
+    }
+
+    /**
+     * Проверяет присутствие в post
+     *
+     * @param string $attributeName
+     * @return boolean
+     */
+    public function isByPost(string $attributeName): bool
+    {
+        return isset($this->postAttributes[$attributeName]);
+    }
+
+    /**
+     * Проверяет присутствие в server
+     *
+     * @param string $attributeName
+     * @return boolean
+     */
+    public function isByServer(string $attributeName): bool
+    {
+        return isset($this->serverAttributes[$attributeName]);
+    }
+
+    /**
+     * @return self
+     * @throws RuntimeException
+     */
+    public static function getInstance(): self
+    {
+        if (! (self::$instance instanceof self)) {
+            throw new \RuntimeException('Объект запроса не инициализирован.');
+        }
+
+        return self::$instance;
+    }
+
 }

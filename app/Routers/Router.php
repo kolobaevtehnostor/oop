@@ -11,31 +11,20 @@ use App\Core\Web;
 
 class Router extends BaseRouter
 {
+    protected $routes = [];
     /**
      * Правила роутов
      *
      * @return array
      */
-    public function rules(): array
-    {
-        return Web::getRouts();
+    public function routes(): array
+    {       
+        return $this->routes;
+    }
 
-        /*
-        return [
-            '/index.php/calculator' => [
-                'controller' => CalculatorController::class,
-                'action'    => 'show',
-                'middleware' => [
-                    AdminOnlyMiddleWare::class,
-                    Only555Id::class,
-                ],
-            ],
-            '/index.php/calculator/calculate' => [
-                'controller' => CalculatorController::class,
-                'action'    => 'calculate',
-            ],
-        ];
-        */
+    public function setRoutes(array $routes) {
+
+        $this->routes = $routes; 
     }
 
 }

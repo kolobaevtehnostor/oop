@@ -1,0 +1,1 @@
+<a href="http://oop.lan/index.php/calculator?id=555&userRole=Admin" >Два калькулятора</a>

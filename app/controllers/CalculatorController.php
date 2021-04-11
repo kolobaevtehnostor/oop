@@ -1,33 +1,38 @@
 <?php
 namespace App\Controllers;
 
-use App\Calculator\Requests\CreditRequest;
-use App\Calculator\RequestValidators\CreditRequestValidators;
+use App\Requests\CreditRequest;
+use App\RequestValidators\CreditRequestValidators;
 use App\Calculator\Models\LoanCalculator;
 use App\Calculator\Models\InstallmentCalculator;
+use App\Core\Controllers\Base\BaseController;
+use App\Core\Responses\JsonResponse;
 
-
-class CalculatorController
+class CalculatorController extends BaseController
 {
     /**
      * Возвращает страницу
      *
      * @return string
      */
-    public function Show(): string 
+    public function actionShow($request): string 
     {
-        return require_once $_SERVER['DOCUMENT_ROOT'] . '//../App//Calculator//Views//Calculator//index.php';
+        // Рассказать про View
+
+        return $this->view('index');
     }
 
     /**
      * Возвращает страницу ответа
      *
-     * @return string
+     * @return string|JsonResponse
      */
-    public function Calculate(): string 
+    public function actionCalculate($request): JsonResponse
     {
-        $creditRequest = new CreditRequest($_POST);
+        $creditRequest = CreditRequest::getInstance();
+
         $creditRequestValidators = new CreditRequestValidators($creditRequest);
+
         $creditRequestValidators->validation();
 
         if ($creditRequestValidators->hasErrors()) {
@@ -36,10 +41,8 @@ class CalculatorController
 
                 $errors = [ $key => ['name' => 'Ошибка: ', 'value' => $error]];
             }
-
-            header('Content-Type: application/json');
-            echo json_encode($errors, JSON_UNESCAPED_UNICODE);
-            die();
+            
+            return $this->json($errors);
         }
         
         if ($creditRequest->getAttribute(CreditRequest::ATTRIBUTE_TYPE) == 'loan' ) {
@@ -48,7 +51,12 @@ class CalculatorController
             $calc = InstallmentCalculator::getIdentity($creditRequest);
         }
 
-        return require_once $_SERVER['DOCUMENT_ROOT'] . '//../App//Calculator//Views//Calculator//ajax_calculator.php';
+        $patch = ($request->server('DOCUMENT_ROOT'));
+        
+        $calcResult = $calc->getTotalResult()->printResult();
+
+        return $this->json($calcResult);
+
     }
     
 
