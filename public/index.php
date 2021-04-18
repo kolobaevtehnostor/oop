@@ -1,14 +1,18 @@
 <?php
+
 error_reporting(E_ALL);
+
 ini_set("display_errors", 1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+define('ROOT_PATH', __DIR__ . '/../');
+
+require_once ROOT_PATH . 'vendor/autoload.php';
 
 use App\Routers\Router;
 use App\Core\Requests\Base\Request;
 use App\Core\Kernel;
 
-$routes = include( __DIR__ . '/../' . 'routes/web.php');
+$routes = include(ROOT_PATH . 'routes/web.php');
 
 $router = new Router();
 

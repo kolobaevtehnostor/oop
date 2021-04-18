@@ -7,6 +7,7 @@ use App\Calculator\Models\LoanCalculator;
 use App\Calculator\Models\InstallmentCalculator;
 use App\Core\Controllers\Base\BaseController;
 use App\Core\Responses\JsonResponse;
+use App\Core\Views\View;
 
 class CalculatorController extends BaseController
 {
@@ -15,11 +16,12 @@ class CalculatorController extends BaseController
      *
      * @return string
      */
-    public function actionShow($request): string 
+    public function actionShow($request): View 
     {
-        // Рассказать про View
-
-        return $this->view('index');
+        return $this->render('calculator/index', [
+            'title' => 'Два калькулятора',
+            'pageTitle' => 'Два калькулятора!!!'
+            ]);
     }
 
     /**

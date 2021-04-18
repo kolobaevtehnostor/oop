@@ -5,6 +5,7 @@ namespace App\Core\Routers\Base;
 use App\Core\Requests\Base\Request;
 use App\Core\Response;
 use App\Core\Responses\JsonResponse;
+//use App\Core\Views\View;
 
 abstract class BaseRouter
 {
@@ -33,20 +34,55 @@ abstract class BaseRouter
             $response->setData($result->getData());
 
             return $response;
+        }   
+
+        if ($result instanceof View) {
+
+            $response->setData($result::__toString());
+
+            return $response;
         }
+
 
         $response->setData($result);
         
         return $response;
     }
 
+    /**
+     * Проверка корректности url
+     *
+     * @return boolean
+     * @throws NotFoundException
+     */
+    protected function validationUrl(string $url, array $routes): bool
+    {
+        if (! array_key_exists($url, $routes)) {
+
+            throw new \Exception('Класс контроллера не найден');
+        }
+        
+        return true;
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return void
+     */
     protected function getResult(Request $request)
     {
+        $urlRequest = $request->server('REQUEST_URI');
+
+        $url = parse_url($urlRequest);
+
+        $urlPath = $url['path'];
+
         $routes = $this->routes();
 
-        if ($this->validationUrl($request->server('PHP_SELF'), $routes)) {
+        if ($this->validationUrl($urlPath, $routes)) {
 
-            $controllerConfig = $routes[$request->server('PHP_SELF')];
+            $controllerConfig = $routes[$urlPath];
         }
 
         try {
@@ -72,22 +108,6 @@ abstract class BaseRouter
         }
 
         return $result;
-    }
-
-    /**
-     * Проверка корректности url
-     *
-     * @return boolean
-     * @throws NotFoundException
-     */
-    protected function validationUrl(string $url, array $routes): bool
-    {
-        if (! array_key_exists($url, $routes)) {
-
-            throw new \Exception('Класс контроллера не найден');
-        }
-        
-        return true;
     }
 
     /**
