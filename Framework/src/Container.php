@@ -25,7 +25,7 @@ class Container
      * @param string $key
      * @return object
      */
-    public function get(string $key)//: object
+    public function get(string $key)
     {
         if (isset($this->singletons[$key])) {
 
@@ -34,11 +34,16 @@ class Container
         
         $aliases = $this->aliases();
 
-        $this->singletons[$key] = ($aliases[$key])::getInstance();
+        $this->singletons[$key] = new $aliases[$key];
         
         return $this->singletons[$key];
     }
     
+    public function bind(string $key, $object): void
+    {
+        $this->singletons[$key] = $object;
+    }
+
     /**
      *
      * @return self

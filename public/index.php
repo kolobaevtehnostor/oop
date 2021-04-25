@@ -9,7 +9,7 @@ define('ROOT_PATH', __DIR__ . '/../');
 require_once ROOT_PATH . 'vendor/autoload.php';
 require_once ROOT_PATH . 'Framework/src/Helpers/function.php';
 
-use Framework\Routers\Router;git
+use Framework\Routers\Router;
 use Framework\Http\Requests\Base\Request;
 use Framework\Http\Kernel;
 
