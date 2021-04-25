@@ -77,5 +77,5 @@ abstract class Calculator
         return ceil($this->getInterestOverpayment() / 12);
     }
 
-    abstract protected function getTotalResult(): InfoTotalResult ;
+    abstract protected function getTotalResult(): InfoTotalResult;
 }
