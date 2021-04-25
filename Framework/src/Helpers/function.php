@@ -9,7 +9,7 @@ function dump($value)
     echo '</pre>';
  }
 
- function app(string $key)//: object
+function app(string $key)//: object
 {
     $container = Container::getInstance();
     
