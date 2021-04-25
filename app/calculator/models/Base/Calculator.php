@@ -37,8 +37,8 @@ abstract class Calculator
 
         $grid = new Grid($amount, $period, $downPayment);
         
-        if ( $grid->getPercent() < 0)
-        {
+        if ( $grid->getPercent() < 0) {
+            
             return null;
         }
         
