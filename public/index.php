@@ -9,7 +9,7 @@ define('ROOT_PATH', __DIR__ . '/../');
 require_once ROOT_PATH . 'vendor/autoload.php';
 require_once ROOT_PATH . 'Framework/src/Helpers/function.php';
 
-use Framework\Routers\Router;
+use Framework\Routers\Router;git
 use Framework\Http\Requests\Base\Request;
 use Framework\Http\Kernel;
 
@@ -22,6 +22,8 @@ $router->setRoutes($routes);
 $kernel = new Kernel($router);
 
 $request = new Request($_SERVER, $_GET, $_POST);
+
+bind(Request::class, $request);
 
 $response = $kernel->handle($request);
 
