@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Controllers\Base;
+namespace Framework\Http\Controllers\Base;
 
-use App\Core\Requests\Base\Request;
-use App\Core\Responses\JsonResponse;
-use App\Core\Views\View;
+use Framework\Http\Requests\Base\Request;
+use Framework\Http\Responses\JsonResponse;
+use Framework\Views\View;
 
 class BaseController
 {
@@ -15,7 +15,6 @@ class BaseController
     }
 
     /**
-     * Undocumented function
      *
      * @param string $fileName
      * @param array $attributes

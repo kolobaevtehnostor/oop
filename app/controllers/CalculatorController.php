@@ -1,13 +1,13 @@
 <?php
 namespace App\Controllers;
 
-use App\Requests\CreditRequest;
+use Framework\Http\Controllers\Base\BaseController;
+use Framework\Http\Responses\JsonResponse;
+use Framework\Views\Base\BaseView;
 use App\RequestValidators\CreditRequestValidators;
 use App\Calculator\Models\LoanCalculator;
 use App\Calculator\Models\InstallmentCalculator;
-use App\Core\Controllers\Base\BaseController;
-use App\Core\Responses\JsonResponse;
-use App\Core\Views\View;
+use App\Requests\CreditRequest;
 
 class CalculatorController extends BaseController
 {
@@ -16,12 +16,12 @@ class CalculatorController extends BaseController
      *
      * @return string
      */
-    public function actionShow($request): View 
+    public function actionShow($request): BaseView 
     {
         return $this->render('calculator/index', [
             'title' => 'Два калькулятора',
             'pageTitle' => 'Два калькулятора!!!'
-            ]);
+        ]);
     }
 
     /**
@@ -31,7 +31,7 @@ class CalculatorController extends BaseController
      */
     public function actionCalculate($request): JsonResponse
     {
-        $creditRequest = CreditRequest::getInstance();
+        $creditRequest = app(CreditRequest::class);
 
         $creditRequestValidators = new CreditRequestValidators($creditRequest);
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Requests\Base;
+namespace Framework\Http\Requests\Base;
 
-use App\Core\Requests\Base\Request;
+use Framework\Http\Requests\Base\Request;
 
 class FormRequest
 {
@@ -17,7 +17,7 @@ class FormRequest
     public function __construct() 
     {
         // рассказать про DI Container
-        $this->request = Request::getInstance();
+        $this->request = app(Request::class);
 
         $this->load();
     }

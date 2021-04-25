@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Responses\Base;
+namespace Framework\Http\Responses\Base;
 
 class BaseResponse
 {

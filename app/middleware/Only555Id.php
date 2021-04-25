@@ -2,8 +2,8 @@
 
 namespace App\Middleware;
 
-use App\Core\Requests\Base\Request;
-use App\Exceptions\NotFoundException;
+use Framework\Http\Requests\Base\Request;
+use Framework\Exceptions\NotFoundException;
 
 class Only555Id
 {

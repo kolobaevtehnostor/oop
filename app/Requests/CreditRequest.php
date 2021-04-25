@@ -2,7 +2,7 @@
 
 namespace App\Requests;
 
-use App\Core\Requests\Base\FormRequest;
+use Framework\Http\Requests\Base\FormRequest;
 
 class CreditRequest extends FormRequest
 {

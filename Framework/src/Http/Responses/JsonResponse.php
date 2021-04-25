@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Responses;
+namespace Framework\Http\Responses;
 
-use App\Core\Responses\Base\BaseResponse;
+use Framework\Http\Responses\Base\BaseResponse;
 
 class JsonResponse extends BaseResponse
 {

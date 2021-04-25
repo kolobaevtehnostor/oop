@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Requests\Base;
+namespace Framework\Http\Requests\Base;
 
 class Request
 {
@@ -137,5 +137,19 @@ class Request
 
         return self::$instance;
     }
+
+    /**
+     * Возвращает url
+     *
+     * @return string
+     */
+    public function getUrlPath(): string
+    {
+        $urlRequest = $this->server('REQUEST_URI');
+
+        $url = parse_url($urlRequest);
+
+        return $url['path'];
+    } 
 
 }

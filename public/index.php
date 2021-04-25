@@ -7,10 +7,11 @@ ini_set("display_errors", 1);
 define('ROOT_PATH', __DIR__ . '/../');
 
 require_once ROOT_PATH . 'vendor/autoload.php';
+require_once ROOT_PATH . 'Framework/src/Helpers/function.php';
 
-use App\Routers\Router;
-use App\Core\Requests\Base\Request;
-use App\Core\Kernel;
+use Framework\Routers\Router;
+use Framework\Http\Requests\Base\Request;
+use Framework\Http\Kernel;
 
 $routes = include(ROOT_PATH . 'routes/web.php');
 

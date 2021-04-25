@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Views\Base;
+namespace Framework\Views\Base;
 
 class BaseView
 {

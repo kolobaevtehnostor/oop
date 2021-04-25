@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Routers;
+namespace Framework\Routers;
 
-use App\Core\Routers\Base\BaseRouter;
+use Framework\Routers\Base\BaseRouter;
+/*
 use App\Controllers\CalculatorController;
 use App\Middleware\Only555Id;
 use App\Middleware\AdminOnlyMiddleWare;
 use App\Config\Routes;
 use App\Core\Web;
+*/
 
 class Router extends BaseRouter
 {
     protected $routes = [];
+
     /**
      * Правила роутов
      *

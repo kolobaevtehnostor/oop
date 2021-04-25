@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Routers\Base;
+namespace Framework\Routers\Base;
 
-use App\Core\Requests\Base\Request;
-use App\Core\Response;
-use App\Core\Responses\JsonResponse;
+use Framework\Http\Requests\Base\Request;
+use Framework\Http\Responses\Response;
+use Framework\Http\Responses\JsonResponse;
 //use App\Core\Views\View;
 
 abstract class BaseRouter
@@ -72,12 +72,8 @@ abstract class BaseRouter
      */
     protected function getResult(Request $request)
     {
-        $urlRequest = $request->server('REQUEST_URI');
-
-        $url = parse_url($urlRequest);
-
-        $urlPath = $url['path'];
-
+        $urlPath = $request->getUrlPath();
+        
         $routes = $this->routes();
 
         if ($this->validationUrl($urlPath, $routes)) {

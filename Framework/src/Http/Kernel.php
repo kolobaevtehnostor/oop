@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core;
+namespace Framework\Http;
 
-use App\Routers\Router;
-use App\Core\Response;
-use App\Core\Requests\Base\Request;
-use App\Exceptions\ErrorHandler;
+use Framework\Routers\Router;
+use Framework\Http\Responses\Response;
+use Framework\Http\Requests\Base\Request;
+use Framework\Exceptions\ErrorHandler;
 use App\Config\Routes;
 
 class Kernel
