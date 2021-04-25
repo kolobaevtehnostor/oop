@@ -39,6 +39,13 @@ class Container
         return $this->singletons[$key];
     }
     
+    /**
+     * Устанавливает объект по ключу
+     *
+     * @param string $key
+     * @param object $object
+     * @return void
+     */
     public function bind(string $key, $object): void
     {
         $this->singletons[$key] = $object;
