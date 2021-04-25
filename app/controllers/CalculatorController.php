@@ -52,8 +52,6 @@ class CalculatorController extends BaseController
         } else {
             $calc = InstallmentCalculator::getIdentity($creditRequest);
         }
-
-        $patch = ($request->server('DOCUMENT_ROOT'));
         
         $calcResult = $calc->getTotalResult()->printResult();
 
