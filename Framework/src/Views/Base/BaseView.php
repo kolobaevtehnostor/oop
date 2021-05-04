@@ -28,7 +28,7 @@ class BaseView
      */
     protected function defineBasePath(): void
     {
-        $this->basePath = ROOT_PATH . static::RESOURCES_BASE_FOLDER . '/' . 'views' . '/' ;
+        $this->basePath = ROOT_PATH . static::RESOURCES_BASE_FOLDER . '/views/' ;
     }
     
     /**

@@ -88,7 +88,6 @@ $.fn.processSendForm = function (view, requestData) {
         downPayment         : '[down-payment]',
         submitButton        : '[calc-submit]',
         typeCalculator      : '',
-        annualInterestRate  : "4.71" 
     },
     process = {
         init: function () {
@@ -102,28 +101,31 @@ $.fn.processSendForm = function (view, requestData) {
         },
         postData: function(type) {
             let id = $(attributes.inputId).val();
+
             $.post( '/index.php/calculator/calculate', { 
-                totalAmount: this.getInput(attributes.amount),
-                period: this.getInput(attributes.period),
-                initialFee: this.getInput(attributes.downPayment),
-                typeCalculator: type,
-                annualInterestRate: "4.71" 
+                totalAmount    : this.getInput(attributes.amount),
+                period         : this.getInput(attributes.period),
+                downPayment    : this.getInput(attributes.downPayment),
+                typeCalculator : type,
             }).done(callBackActions.onResponseDone);
         }, 
     },
     callBackActions = {
         onResponseDone: function (data) {
+
             $('.load-' + attributes.typeCalculator + '-result').html('');
-            $.each(data, function(index, value) {
-            $('.load-' + attributes.typeCalculator + '-result').append(
-                    '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
-                            '<div>' +
-                            '<h6 class="my-0">' + value.name + '</h6>' +
-                            '</div>' +
-                            '<span class="text-muted">' +  value.value + '</span>' +
-                    '</li>'
-                );
-            });
+            $.each(data, function(index, resultValue) {
+                $.each(resultValue, function(key, value){                    
+                    $('.load-' + attributes.typeCalculator + '-result').append(
+                            '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
+                                    '<div>' +
+                                    '<h6 class="my-0">' + key + '</h6>' +
+                                    '</div>' +
+                                    '<span class="text-muted">' +  value + '</span>' +
+                            '</li>'
+                        );
+                    });
+                });
         },
         onSubmit: function () {
             attributes.typeCalculator = $(this).data('type-form');

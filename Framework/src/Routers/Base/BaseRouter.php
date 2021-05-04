@@ -5,11 +5,9 @@ namespace Framework\Routers\Base;
 use Framework\Http\Requests\Base\Request;
 use Framework\Http\Responses\Response;
 use Framework\Http\Responses\JsonResponse;
-//use App\Core\Views\View;
 
 abstract class BaseRouter
 {
-
     /**
      * Правила роутов
      *

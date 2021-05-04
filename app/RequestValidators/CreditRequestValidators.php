@@ -27,7 +27,6 @@ class CreditRequestValidators
                 if (! is_callable($rule)) {
                     throw new \RuntimeException('Правило валидации должно быть вызываемой');
                 }
-                
                 $rule($this->creditRequest->getAttribute($key));
 
             } catch (\InvalidArgumentException $error) {
@@ -89,10 +88,6 @@ class CreditRequestValidators
 
                 if (! is_int($value)) {
                     throw new \InvalidArgumentException('Первоначальный взнос должен быть числом');
-                }
-
-                if ($value > 36) {
-                    throw new \InvalidArgumentException('Первоначальный взнос слишком большой, превышает сумму кредитования');
                 }
             },
         ];

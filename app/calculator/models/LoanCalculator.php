@@ -18,7 +18,7 @@ class LoanCalculator extends Calculator
         // Стоимость кредита в месяц
         $loanCostMonth = $this->getLoanCostMonth();
 
-        //Стоимость кредита за 6 месяцев
+        //Стоимость кредита за период месяцев
         $loanCostForPeriod = (($loanCostMonth) * $this->period) + $this->amount;
 
         //Стоимость кредита для клиента в месяц
