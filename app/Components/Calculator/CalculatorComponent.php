@@ -1,65 +1,71 @@
 <?php 
 
 namespace App\Components\Calculator;
+use App\Components\Calculator\Strategies\Base\StrategyInterface;
+use App\Components\Calculator\Strategies\CalculateStrategyLoan;
+use App\Components\Calculator\Strategies\CalculateStrategyInstallment;
 
 class CalculatorComponent
 {
+
+    /**
+     * @var array 
+     */
+    private static $strategies = [
+        'installment' => CalculateStrategyInstallment::class,
+        'loan'        => CalculateStrategyLoan::class
+    ];
+
     /**
      * Сумма, рублей
      * @var int
      */
-    protected $amount;
+    public $amount;
 
     /** Период, мес.
      * @var int
      */
-    protected $period;
+    public $period;
     
     /** Первоначальный взнос, руб.
      * @var int
      */
-    protected $downPayment;
+    public $downPayment;
 
     /** Стоимость кредита за период месяцев
      * @var int
      */
-    protected $costForPeriod;
+    public $costForPeriod;
 
     /** Стоимость кредита за период месяцев (Клиент)
      * @var int
      */
-    protected $costForPeriodClient;
+    public $costForPeriodClient;
     
     /** Стоимость кредита за период месяцев (Продавец)
      * @var int
      */
-    protected $costForPeriodSeller;
+    public $costForPeriodSeller;
 
     /** Стоимость кредита
      * @var int
      */
-    protected $monthlyPayment;
-    
-    /** Годовая ставка процентная, проценты 
-     * @var int
-     */
-   // protected $annualInterestRate;
-    
-    /** Стоимость кредита в месяц
-     * @var int
-     */
-   // protected $costMonth;
-    
+    public $monthlyPayment;    
     
     /** Стоимость кредита для клиента в месяц
      * @var int
      */
-    protected $monthlyClientPayment;
+    public $monthlyClientPayment;
 
     /** Стоимость кредита для продавца в месяц
      * @var int
      */
-    protected $monthlySellerPayment;
+    public $monthlySellerPayment;
+
+    /**
+     * @var StrategyInterface
+     */
+    protected $strategy;
 
     public function __construct(int $amount, int $period, int $downPayment, float $annualInterestRate) 
     {
@@ -72,47 +78,52 @@ class CalculatorComponent
     }
 
     /**
-     * Кредитный калькулятор
-     *
-     * @param integer $amount
-     * @param integer $period
-     * @param integer $downPayment
-     * @param float $annualInterestRate
-     * @return array
+     * Обычно Контекст позволяет
+     * заменить объект Стратегии
+     * во время выполнения.
      */
-    public static function calculateLoan(int $amount, int $period, int $downPayment, float $annualInterestRate): self
+    public function setStrategy(StrategyInterface $strategy)
     {
-        $calc = new static($amount, $period, $downPayment, $annualInterestRate);
-
-        $calc->costForPeriodSeller = 0;
-        $calc->monthlySellerPayment = 0;
-
-        $calc->costForPeriodClient = (($calc->costMonth) * $calc->period) + $calc->amount;
-        $calc->monthlyClientPayment = ceil($calc->costForPeriodClient / $calc->period);
-
-        return $calc;
+        $this->strategy = $strategy;
     }
-    
+
     /**
-     * Калькулятор рассрочки
-     *
+     * Расчет
+     * 
      * @param integer $amount
      * @param integer $period
      * @param integer $downPayment
      * @param float $annualInterestRate
      * @return array
      */
-    public static function calculateInstallment(int $amount, int $period, int $downPayment, float $annualInterestRate): self
+    public static function calculate(string $type, int $amount, int $period, int $downPayment, float $annualInterestRate): array
     {
         $calc = new static($amount, $period, $downPayment, $annualInterestRate);
 
-        $calc->costForPeriodSeller = $calc->costMonth * $calc->period;;
-        $calc->monthlySellerPayment = ceil($calc->costForPeriodSeller / $calc->period);
-        
-        $calc->costForPeriodClient = $calc->amount;
-        $calc->monthlyClientPayment = ceil($calc->costForPeriodClient / $calc->period);
+        $strategy = static::getStrategy($type);
+        $calc->setStrategy($strategy);
 
-        return $calc;
+        $calc = $calc->strategy->calculate($calc);
+
+        return $calc->getResult();
+    }
+
+    /**
+     * Возвращает стратегию
+     *
+     * @param string $strategiesKey
+     * @return StrategyInterface
+     */
+    protected static function getStrategy(string $strategiesKey): StrategyInterface
+    {
+        if (! isset(static::$strategies[$strategiesKey])) {
+            
+            throw new BadRequestException('Неверно указан тип калькулятора');
+        }
+
+        $strategy = static::$strategies[$strategiesKey];
+
+        return new $strategy;
     }
 
     /**
@@ -154,7 +165,6 @@ class CalculatorComponent
     public function getResult(): array
     {
         return [
-
             ['Переплата кредита в месяц'        => $this->costMonth],
             ['Переплата по процентам, рублей:'  => $this->getInterestOverpayment()], 
             ['Стоимость кредита в год:'         => $this->getTotalCost()],
@@ -165,7 +175,6 @@ class CalculatorComponent
 
             ['Взнос клиента в месяц'  => $this->monthlyClientPayment],
             ['Взнос продавца в месяц' =>  $this->monthlySellerPayment]
- 
         ];
     }
 

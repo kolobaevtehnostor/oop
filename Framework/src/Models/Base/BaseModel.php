@@ -1,25 +1,46 @@
 <?php
 
-namespace App\Models\Base;
+namespace Framework\Models\Base;
 
-class BaseModel 
+use Framework\Models\Builder\Builder;
+
+abstract class BaseModel 
 {
-    protected $builder = [];
+    protected $tableName;
+
+    protected $builder;
 
     protected static $instance;
 
     /**
+     * Возвращает название
      *
-     * @return void
+     * @return string
      */
-    public static function getInstance()
+    abstract function getTableName(): string;
+
+    public function __construct() 
     {
-        if (! (static::$instance instanceof static)) {
-            static::$instance = new static();
-        }
+        $this->tableName = $this->getTableName();
+
+       // $data = $this->getJsonToArray();
+        $data = getConfig('grid_' . $this->tableName . '.php');
         
-        return static::$instance;
+        $this->builder = new Builder($data);
     }
+    
+    /**
+    *
+    * @return void
+    */
+   public static function getInstance()
+   {
+       if (! (static::$instance instanceof static)) {
+           static::$instance = new static();
+       }
+       
+       return static::$instance;
+   }
 
     /**
      * Получаем сокуп метод
@@ -92,6 +113,21 @@ class BaseModel
     }
 
     /**
+     * Возвращает json из файла
+     * в виде массива php
+     *
+     * @param string $nameFile
+     * @param string $pathFile
+     * @return void
+     */
+    protected function getJsonToArray(
+        string $pathFile = ROOT_PATH . '/app/components/calculator/'): array
+    {
+        $date = file_get_contents($pathFile . $this->tableName . '.json' );
+        return (array) json_decode($date, true);
+    }
+
+    /**
      * Делает выборку
      *
      * @param string $key
@@ -100,14 +136,7 @@ class BaseModel
      */
     protected function where(string $key, string $operator, string $value)
     {
-        foreach ($this->builder as $idKey => $row) {
-
-            eval('$executionResult = $row[$key] ' . $operator . ' $value;');
-
-            if (! $executionResult) {
-                unset($this->builder[$idKey]);
-            }
-        }
+        $this->builder->where($key, $operator, $value);
 
         return $this;
     }
@@ -118,9 +147,9 @@ class BaseModel
      * @param string $name
      * @return mixed
      */
-    public function findOneToArray()
+    public function findOne()
     {
-        return current($this->builder);
+        return $this->builder->findOne();
     }
     
     /**
@@ -129,8 +158,10 @@ class BaseModel
      * @param string $name
      * @return mixed
      */
-    public function findAllToArray()
+ 
+    public function findAll()
     {
-        return $this->builder;
+        return $this->builder->findAll();
     }
+    
 }

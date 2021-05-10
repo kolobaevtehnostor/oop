@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Base\BaseModel;
+use Framework\Models\Base\BaseModel;
 
 class GridLoan extends BaseModel
 {
+
     /**
      * Общая сумма
      * @var int
@@ -30,27 +31,10 @@ class GridLoan extends BaseModel
      */
     protected $percentThreeMonths;
 
-    public function __construct() 
+    public function getTableName(): string
     {
-        $this->builder = $this->getJsonToArray();
+        return 'loan';
     }
-
-    /**
-     * Возвращает json из файла
-     * в виде массива php
-     *
-     * @param string $nameFile
-     * @param string $pathFile
-     * @return void
-     */
-    protected function getJsonToArray(
-        string $nameFile = 'loan',
-        string $pathFile = ROOT_PATH . '/app/components/calculator/'): array
-    {
-        $date = file_get_contents($pathFile . $nameFile . '.json' );
-        return (array) json_decode($date, true);
-    }
-    
     /**
      * Возвращает по период месяцы
      *

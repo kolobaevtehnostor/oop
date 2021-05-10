@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Framework\Http\Requests\Base\Request;
+use Framework\Config\Configuration;
 use App\Requests\CreditRequest;
 
 class Container
@@ -15,7 +16,8 @@ class Container
     {
         return [
             Request::class => Request::class,
-            CreditRequest::class => CreditRequest::class
+            CreditRequest::class => CreditRequest::class,
+            Configuration::class => Configuration::class,
         ];
     }
     

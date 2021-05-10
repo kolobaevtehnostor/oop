@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Base\BaseModel;
+use Framework\Models\Base\BaseModel;
 
 class GridInstallment extends BaseModel
 {
@@ -30,25 +30,12 @@ class GridInstallment extends BaseModel
      */
     protected $percentThreeMonths;
 
-    public function __construct() 
-    {
-        $this->builder = $this->getJsonToArray();
-    }
-
     /**
-     * Возвращает json из файла
-     * в виде массива php
-     *
-     * @param string $nameFile
-     * @param string $pathFile
-     * @return void
+     * @see BaseModel 
      */
-    protected function getJsonToArray(
-        string $nameFile = 'installment',
-        string $pathFile = ROOT_PATH . '/app/components/calculator/'): array
+    public function getTableName(): string
     {
-        $date = file_get_contents($pathFile . $nameFile . '.json' );
-        return (array) json_decode($date, true);
+        return 'installment';
     }
     
     /**

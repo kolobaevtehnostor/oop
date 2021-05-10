@@ -13,6 +13,8 @@ use App\Models\Base\BaseModel;
 
 class CalculatorController extends BaseController
 {
+    protected $form;
+
     /**
      * Возвращает страницу
      *
@@ -33,87 +35,44 @@ class CalculatorController extends BaseController
      */
     public function actionCalculate($request): JsonResponse
     {
-        $creditRequest = app(CreditRequest::class);
 
-        $creditRequestValidators = new CreditRequestValidators($creditRequest);
+        $this->form = app(CreditRequest::class);
 
-        $creditRequestValidators->validation();
+        $validator = new CreditRequestValidators($this->form);
 
-        if ($creditRequestValidators->hasErrors()) {
-            $errors = [];
-            foreach ($creditRequestValidators->getErrors() as $key => $error) {
+        $validator->validate();
 
-                $errors = [ $key => ['name' => 'Ошибка: ', 'value' => $error]];
-            }
-            
-            return $this->json($errors);
+        if ($validator->hasErrors()) {
+
+            return $this->json(
+                    $validator->getErrors()
+                );
         }
 
-        if ( $creditRequest->getAttribute('typeCalculator') == 'loan') {
-            
-            $calcResult = $this->calculateLoan($creditRequest);
-            return $this->json($calcResult);
-        }
+        return $this->json(
+            $this->calculate()
+        );
 
-        $calcResult = $this->calculateInstallment($creditRequest);
-        return $this->json($calcResult);
     }
 
-    /**
-     * Возвращает результат 
-     * расчета кредитного калькулятора
-     *
-     * @param CreditRequest $creditRequest
-     * @return array
-     */
-    protected function calculateLoan(CreditRequest $creditRequest): array
+    protected function calculate(): array
     {
-        $totalAmountForCalculate     = $creditRequest->getAttribute('totalAmount');
-        $monthsForCalculate          = $creditRequest->getAttribute('period');
-        $downPaymentForCalculate     = $creditRequest->getAttribute('downPayment');
+        $totalAmountForCalculate     = $this->form->getAttribute('totalAmount');
+        $monthsForCalculate          = $this->form->getAttribute('period');
+        $downPaymentForCalculate     = $this->form->getAttribute('downPayment');
+        $typeCalculator              = $this->form->getAttribute('typeCalculator');
         $percentForCalculate         = $downPaymentForCalculate / $totalAmountForCalculate * 100;
 
         $calcModel = GridLoan::byGreaterOrEqualMonths($monthsForCalculate)
             ->byGreaterOrEqualPercent($percentForCalculate)
-            ->findOneToArray();
+            ->findOne();
 
-        $calcLoan = CalculatorComponent::calculateLoan(
+        return CalculatorComponent::calculate(
+            $typeCalculator,
             $totalAmountForCalculate,
             $monthsForCalculate,
             $downPaymentForCalculate,
             $calcModel['annual_rate']
         );
-
-        return $calcLoan->getResult();
     }
-
-     /**
-     * Возвращает результат 
-     * расчета калькулятора рассрочки
-     *
-     * @param CreditRequest $creditRequest
-     * @return array
-     */
-    protected function calculateInstallment(CreditRequest $creditRequest): array
-    {
-        $totalAmountForCalculate     = $creditRequest->getAttribute('totalAmount');
-        $monthsForCalculate          = $creditRequest->getAttribute('period');
-        $downPaymentForCalculate     = $creditRequest->getAttribute('downPayment');
-        $typeCalculatorForCalculate  = $creditRequest->getAttribute('typeCalculator');
-        $percentForCalculate         = $downPaymentForCalculate / $totalAmountForCalculate * 100;
-
-        $calcModel = GridInstallment::byGreaterOrEqualMonths($monthsForCalculate)
-           ->byGreaterOrEqualPercent($percentForCalculate)
-           ->findOneToArray();
-
-        $calcInstallment = CalculatorComponent::calculateInstallment(
-            $totalAmountForCalculate,
-            $monthsForCalculate,
-            $downPaymentForCalculate,
-            $calcModel['annual_rate']
-        );
-
-        return $calcInstallment->getResult();
-    }
-    
 }

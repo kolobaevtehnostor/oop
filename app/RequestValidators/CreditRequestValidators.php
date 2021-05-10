@@ -20,7 +20,7 @@ class CreditRequestValidators
      *
      * @return void
      */
-    public function validation(): void
+    public function validate(): void
     {
         foreach ($this->rules() as $key => $rule) {
             try {
@@ -67,7 +67,7 @@ class CreditRequestValidators
             CreditRequest::ATTRIBUTE_PERIOD => function ($value, $data = []): void { 
                 $value = intval($value);
 
-                if ($value < 0) {
+                if ($value <= 0) {
                     throw new \InvalidArgumentException('Значение периода должно быть больше 1');
                 }
 
@@ -101,7 +101,6 @@ class CreditRequestValidators
     public function hasErrors(): bool
     {
         return ! empty($this->errors);
-        // return (bool) count($errors); // Почему-то не работает =(
     }
     
     public function hasNotErrors(): bool 
