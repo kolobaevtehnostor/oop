@@ -6,10 +6,7 @@ use Framework\Http\Responses\JsonResponse;
 use Framework\Views\Base\BaseView;
 use App\Requests\CreditRequest;
 use App\RequestValidators\CreditRequestValidators;
-use App\Models\GridLoan;
-use App\Models\GridInstallment;
 use App\Components\Calculator\CalculatorComponent;
-use App\Models\Base\BaseModel;
 
 class CalculatorController extends BaseController
 {
@@ -35,7 +32,6 @@ class CalculatorController extends BaseController
      */
     public function actionCalculate($request): JsonResponse
     {
-
         $this->form = app(CreditRequest::class);
 
         $validator = new CreditRequestValidators($this->form);
@@ -57,22 +53,8 @@ class CalculatorController extends BaseController
 
     protected function calculate(): array
     {
-        $totalAmountForCalculate     = $this->form->getAttribute('totalAmount');
-        $monthsForCalculate          = $this->form->getAttribute('period');
-        $downPaymentForCalculate     = $this->form->getAttribute('downPayment');
-        $typeCalculator              = $this->form->getAttribute('typeCalculator');
-        $percentForCalculate         = $downPaymentForCalculate / $totalAmountForCalculate * 100;
-
-        $calcModel = GridLoan::byGreaterOrEqualMonths($monthsForCalculate)
-            ->byGreaterOrEqualPercent($percentForCalculate)
-            ->findOne();
-
         return CalculatorComponent::calculate(
-            $typeCalculator,
-            $totalAmountForCalculate,
-            $monthsForCalculate,
-            $downPaymentForCalculate,
-            $calcModel['annual_rate']
+            $this->form
         );
     }
 }

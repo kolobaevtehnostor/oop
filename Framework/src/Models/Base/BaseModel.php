@@ -23,8 +23,7 @@ abstract class BaseModel
     {
         $this->tableName = $this->getTableName();
 
-       // $data = $this->getJsonToArray();
-        $data = getConfig('grid_' . $this->tableName . '.php');
+        $data = getConfig('grid_' . $this->tableName);
         
         $this->builder = new Builder($data);
     }

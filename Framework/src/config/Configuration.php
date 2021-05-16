@@ -13,6 +13,25 @@ class Configuration
     {
         $this->dirToArray();
     }
+    /**
+     * Перебирает все файлы
+     *
+     * @param string $dir
+     * @return void
+     */
+    function dirToArray(string $dir = ROOT_PATH . 'app/config'): void
+    {
+        $cdir = scandir($dir);
+
+        foreach ($cdir as $key => $value)
+        {
+            if (!in_array($value,array(".","..")))
+            {
+                $configFileParams = include($dir . '/' . $value);
+                $this->params = array_merge($this->params, $configFileParams); 
+            }
+        }
+    }
 
     /**
      * @return self
@@ -28,27 +47,6 @@ class Configuration
     }
 
     /**
-     * Перебирает все файлы
-     *
-     * @param string $dir
-     * @return void
-     */
-    function dirToArray(string $dir = ROOT_PATH . 'app/config'): void
-    {
-        $cdir = scandir($dir);
-
-        foreach ($cdir as $key => $value)
-        {
-            if (!in_array($value,array(".","..")))
-            {
-                require ($dir . '/' . $value);
-                $this->params[$value] = $params[$value];
-            }
-        }
-
-    }
-
-    /**
      * Возвращает параметр конфига
      *
      * @param string $key
@@ -56,7 +54,7 @@ class Configuration
      */
     public function getParam(string $key)
     {
-        if ( isset( $this->params[$key]) ) {
+        if (isset( $this->params[$key])) {
 
             return $this->params[$key];
         }

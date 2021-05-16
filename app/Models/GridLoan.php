@@ -31,6 +31,9 @@ class GridLoan extends BaseModel
      */
     protected $percentThreeMonths;
 
+    /**
+     * @see BaseModel 
+     */
     public function getTableName(): string
     {
         return 'loan';

@@ -4,6 +4,7 @@ namespace App\Components\Calculator;
 use App\Components\Calculator\Strategies\Base\StrategyInterface;
 use App\Components\Calculator\Strategies\CalculateStrategyLoan;
 use App\Components\Calculator\Strategies\CalculateStrategyInstallment;
+use App\Requests\CreditRequest;
 
 class CalculatorComponent
 {
@@ -21,6 +22,12 @@ class CalculatorComponent
      * @var int
      */
     public $amount;
+
+    /**
+     * Тип расчета
+     * @var int
+     */
+    public $type;
 
     /** Период, мес.
      * @var int
@@ -67,14 +74,9 @@ class CalculatorComponent
      */
     protected $strategy;
 
-    public function __construct(int $amount, int $period, int $downPayment, float $annualInterestRate) 
+    public function __construct() 
     {
-        $this->amount             = $amount;
-        $this->period             = $period;
-        $this->downPayment        = $downPayment;
-        $this->annualInterestRate = $annualInterestRate;
-
-        $this->costMonth = $this->getCostMonth();
+        //
     }
 
     /**
@@ -86,22 +88,61 @@ class CalculatorComponent
     {
         $this->strategy = $strategy;
     }
+    
+    /**
+     * Устанавливает свойства
+     *
+     * @param CreditRequest $form
+     * @return void
+     */
+    public function setAttributes(CreditRequest $form): void
+    {
+        $this->type        = $form->getAttribute('typeCalculator');
+        $this->amount      = $form->getAttribute('totalAmount');
+        $this->period      = $form->getAttribute('period');
+        $this->downPayment = $form->getAttribute('downPayment');
+
+        $percentForCalculate = $this->downPayment / $this->amount * 100;
+        $monthsForCalculate  = $this->period;
+
+        $calcModel = $this->strategy->getModel();
+
+        $calcModel = \App\Models\GridLoan::byGreaterOrEqualMonths($monthsForCalculate)
+            ->byGreaterOrEqualPercent($percentForCalculate)
+            ->findOne();
+
+        $annualInterestRate = $calcModel['annual_rate'];
+
+        $this->annualInterestRate = $annualInterestRate;
+        
+        $this->costMonth = $this->getCostMonth();
+    }
 
     /**
      * Расчет
      * 
-     * @param integer $amount
-     * @param integer $period
-     * @param integer $downPayment
-     * @param float $annualInterestRate
+     * @param CreditRequest $form
      * @return array
      */
-    public static function calculate(string $type, int $amount, int $period, int $downPayment, float $annualInterestRate): array
+    public static function calculate(CreditRequest $form): array
     {
-        $calc = new static($amount, $period, $downPayment, $annualInterestRate);
-
+        
+        $type = $form->getAttribute('typeCalculator');
+        
+        $calc = new static();
+        
         $strategy = static::getStrategy($type);
+
         $calc->setStrategy($strategy);
+
+        $calc->setAttributes($form);
+
+/** */
+        
+
+        //$strategy = static::getStrategy($type);
+
+        //$calc->setStrategy($strategy);
 
         $calc = $calc->strategy->calculate($calc);
 

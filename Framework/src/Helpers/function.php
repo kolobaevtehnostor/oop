@@ -9,6 +9,11 @@ function dump($value) {
     echo '</pre>';
  }
 
+function dd($value) {
+   dump($value);
+   die;
+ }
+
 function app(string $key) {
     $container = Container::getInstance();
     
