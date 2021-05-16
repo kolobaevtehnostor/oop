@@ -15,7 +15,7 @@ class Container
     protected function aliases(): array
     {
         return [
-            Request::class => Request::class,
+            Request::class       => Request::class,
             CreditRequest::class => CreditRequest::class,
             Configuration::class => Configuration::class,
         ];
