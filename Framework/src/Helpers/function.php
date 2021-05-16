@@ -24,7 +24,7 @@ function app(string $key) {
  * Возвращает свойство конфигурации
  *
  * @param string $key
- * @return void
+ * @return mixed
  */
 function getConfig(string $key) {
    $config = app(Configuration::class);
@@ -35,11 +35,11 @@ function getConfig(string $key) {
 /**
  *
  * @param string $key
- * @param [type] $object
+ * @param mixed $object
  * @return void
  */
 function bind(string $key, $object) {
     $container = Container::getInstance();
     
-    return $container->bind($key, $object);
+    $container->bind($key, $object);
 }
