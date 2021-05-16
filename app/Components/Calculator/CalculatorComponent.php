@@ -5,6 +5,7 @@ use App\Components\Calculator\Strategies\Base\StrategyInterface;
 use App\Components\Calculator\Strategies\CalculateStrategyLoan;
 use App\Components\Calculator\Strategies\CalculateStrategyInstallment;
 use App\Requests\CreditRequest;
+use Framework\Models\Base\BaseModel;
 
 class CalculatorComponent
 {
@@ -74,11 +75,6 @@ class CalculatorComponent
      */
     protected $strategy;
 
-    public function __construct() 
-    {
-        //
-    }
-
     /**
      * Обычно Контекст позволяет
      * заменить объект Стратегии
@@ -88,7 +84,31 @@ class CalculatorComponent
     {
         $this->strategy = $strategy;
     }
+
+    /**
+     * @return float
+     */
+    protected function percentForCalculate(): float
+    {
+        return $this->downPayment / $this->amount * 100;
+    }
     
+    /**
+     * Возвращает модель
+     *
+     * @return BaseModel
+     */
+    protected function getCalcModel(): array
+    {
+        $model = $this->strategy->getModel();
+
+        $percentForCalculate = $this->percentForCalculate();
+
+        return $model::byGreaterOrEqualMonths($this->period)
+            ->byGreaterOrEqualPercent($percentForCalculate)
+            ->findOne();
+    }
+
     /**
      * Устанавливает свойства
      *
@@ -102,22 +122,13 @@ class CalculatorComponent
         $this->period      = $form->getAttribute('period');
         $this->downPayment = $form->getAttribute('downPayment');
 
-        $percentForCalculate = $this->downPayment / $this->amount * 100;
-        $monthsForCalculate  = $this->period;
+        $calcModel = $this->getCalcModel();
 
-        $calcModel = $this->strategy->getModel();
-
-        $calcModel = \App\Models\GridLoan::byGreaterOrEqualMonths($monthsForCalculate)
-            ->byGreaterOrEqualPercent($percentForCalculate)
-            ->findOne();
-
-        $annualInterestRate = $calcModel['annual_rate'];
-
-        $this->annualInterestRate = $annualInterestRate;
+        $this->annualInterestRate = $calcModel['annual_rate'];
         
         $this->costMonth = $this->getCostMonth();
     }
-
+    
     /**
      * Расчет
      * 
@@ -136,13 +147,6 @@ class CalculatorComponent
         $calc->setStrategy($strategy);
 
         $calc->setAttributes($form);
-
-/** */
-        
-
-        //$strategy = static::getStrategy($type);
-
-        //$calc->setStrategy($strategy);
 
         $calc = $calc->strategy->calculate($calc);
 
