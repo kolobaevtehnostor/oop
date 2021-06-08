@@ -52,7 +52,6 @@ class CalculatorController extends BaseController
         
         $calculator->calculate($this->form);
 
-        dd($writer->all());
         return $this->json($writer::all());
     }
 

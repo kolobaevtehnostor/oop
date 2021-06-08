@@ -8,9 +8,13 @@ class ResultContainerWriterAll implements ResultContainerInterface
 {
     protected $data = [];
 
-    public function setData(array $attributes = []): array
+    protected static $instance;
+
+    public static function setData(array $attributes = []): void
     {
-        $this->data = $attributes;
+        $instance = static::getInstance();
+
+        $instance->data = $attributes;
     }
 
     /**
@@ -18,8 +22,24 @@ class ResultContainerWriterAll implements ResultContainerInterface
      *
      * @return array
      */
-    public function all(): array
+    public static function all(): array
     {
-        return $this->data;
+        $instance = static::getInstance();
+
+        return $instance->data;
     }
+
+    /**
+     *
+     * @return self
+     */
+    public static function getInstance(): self
+    {
+        if (! static::$instance instanceof static) {
+            static::$instance = new static;
+        }
+        
+        return static::$instance;
+    }
+
 }

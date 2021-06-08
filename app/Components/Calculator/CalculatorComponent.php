@@ -30,13 +30,13 @@ class CalculatorComponent
         'monthlyClientPayment' => 0,
     ];
 
-
+/*
     public $costForPeriod;
     public $costForPeriodClient;
     public $costForPeriodSeller;
     public $monthlyPayment;
     public $monthlySellerPayment;
-
+*/
 
     /**
      * @var StrategyInterface
