@@ -54,12 +54,4 @@ class CalculatorController extends BaseController
 
         return $this->json($writer::all());
     }
-
-    protected function calculate(): array
-    {
-
-        return $calculator->calculate(
-            $this->form
-        );
-    }
 }
