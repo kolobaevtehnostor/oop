@@ -2,6 +2,8 @@
 
 namespace Framework\Exceptions;
 
+use Framework\Exceptions\NotFoundException;
+
 class ErrorHandler
 {
     public function getResult(\Throwable $error)

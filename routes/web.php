@@ -10,8 +10,8 @@ return [
         'controller' => CalculatorController::class,
         'action'    => 'actionShow',
         'middleware' => [
-            AdminOnlyMiddleWare::class,
-            Only555Id::class,
+     //       AdminOnlyMiddleWare::class,
+     //       Only555Id::class,
         ],
     ],
     '/index.php/calculator/calculate' => [

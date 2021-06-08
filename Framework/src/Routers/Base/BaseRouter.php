@@ -5,6 +5,8 @@ namespace Framework\Routers\Base;
 use Framework\Http\Requests\Base\Request;
 use Framework\Http\Responses\Response;
 use Framework\Http\Responses\JsonResponse;
+use Framework\Exception\HttpException;
+use Framework\Exceptions\NotFoundException;
 
 abstract class BaseRouter
 {

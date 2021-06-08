@@ -2,7 +2,7 @@
 
 namespace Framework\Exceptions;
 
-use App\Exceptions\HttpException;
+use Framework\Exceptions\HttpException;
 
 class BadRequestException extends HttpException
 {

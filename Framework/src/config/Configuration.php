@@ -21,12 +21,11 @@ class Configuration
      */
     function dirToArray(string $dir = ROOT_PATH . 'app/config'): void
     {
-        $cdir = scandir($dir);
+        $folderFiles = scandir($dir);
 
-        foreach ($cdir as $key => $value)
+        foreach ($folderFiles as $key => $value)
         {
-            if (!in_array($value,array(".","..")))
-            {
+            if (! in_array($value,array('.', '..'))) {
                 $configFileParams = include($dir . '/' . $value);
                 $this->params = array_merge($this->params, $configFileParams); 
             }

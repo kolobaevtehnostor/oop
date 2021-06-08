@@ -6,5 +6,12 @@ use App\Components\Calculator\CalculatorComponent;
 
 interface StrategyInterface
 {
-    function calculate(CalculatorComponent $calc): CalculatorComponent;
+    
+    /**
+     * Производит расчет калькулятора
+     *
+     * @param array $calc
+     * @return array
+     */
+    function calculate(array $attributes = []): array;
 }

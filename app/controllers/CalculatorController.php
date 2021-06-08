@@ -7,6 +7,7 @@ use Framework\Views\Base\BaseView;
 use App\Requests\CreditRequest;
 use App\RequestValidators\CreditRequestValidators;
 use App\Components\Calculator\CalculatorComponent;
+use App\Components\Calculator\Writer\ResultContainerWriterAll;
 
 class CalculatorController extends BaseController
 {
@@ -45,15 +46,20 @@ class CalculatorController extends BaseController
                 );
         }
 
-        return $this->json(
-            $this->calculate()
-        );
+        $writer = ResultContainerWriterAll::class;
+        
+        $calculator = new CalculatorComponent($writer);
+        
+        $calculator->calculate($this->form);
 
+        dd($writer->all());
+        return $this->json($writer::all());
     }
 
     protected function calculate(): array
     {
-        return CalculatorComponent::calculate(
+
+        return $calculator->calculate(
             $this->form
         );
     }

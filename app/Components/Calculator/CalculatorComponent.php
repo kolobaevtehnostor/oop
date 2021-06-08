@@ -6,74 +6,62 @@ use App\Components\Calculator\Strategies\CalculateStrategyLoan;
 use App\Components\Calculator\Strategies\CalculateStrategyInstallment;
 use App\Requests\CreditRequest;
 use Framework\Models\Base\BaseModel;
+use Framework\Exceptions\BadRequestException;
 
 class CalculatorComponent
 {
-
     /**
      * @var array 
      */
-    private static $strategies = [
+    private $strategies = [
         'installment' => CalculateStrategyInstallment::class,
         'loan'        => CalculateStrategyLoan::class
     ];
 
     /**
-     * Сумма, рублей
-     * @var int
+     * @var array
      */
-    public $amount;
+    protected $attributes = [
+        'typeCalculator' => '',
+        'totalAmount' => 0,
+        'period' => 0,
+        'downPayment' => 0,
+        'costForPeriodClient' => 0,
+        'monthlyClientPayment' => 0,
+    ];
 
-    /**
-     * Тип расчета
-     * @var int
-     */
-    public $type;
 
-    /** Период, мес.
-     * @var int
-     */
-    public $period;
-    
-    /** Первоначальный взнос, руб.
-     * @var int
-     */
-    public $downPayment;
-
-    /** Стоимость кредита за период месяцев
-     * @var int
-     */
     public $costForPeriod;
-
-    /** Стоимость кредита за период месяцев (Клиент)
-     * @var int
-     */
     public $costForPeriodClient;
-    
-    /** Стоимость кредита за период месяцев (Продавец)
-     * @var int
-     */
     public $costForPeriodSeller;
-
-    /** Стоимость кредита
-     * @var int
-     */
-    public $monthlyPayment;    
-    
-    /** Стоимость кредита для клиента в месяц
-     * @var int
-     */
-    public $monthlyClientPayment;
-
-    /** Стоимость кредита для продавца в месяц
-     * @var int
-     */
+    public $monthlyPayment;
     public $monthlySellerPayment;
+
 
     /**
      * @var StrategyInterface
      */
     protected $strategy;
+
+    public function __construct(string $resultContainer)
+    {
+        $this->initResultContainer($resultContainer);
+    }
+
+    /**
+     * Инициализация resultContainer
+     *
+     * @param string $resultContainer
+     * @return void
+     */
+    protected function initResultContainer(string $resultContainer): void
+    {
+        if ($resultContainer instanceof ResultContainerInterface) {
+            throw new \InvalidArgumentException('Тип расчета должен отвечать интерфейсу ' . ResultContainerInterface::class);
+        }
+
+        $this->resultContainer = new $resultContainer;
+    }
 
     /**
      * Обычно Контекст позволяет
@@ -90,7 +78,7 @@ class CalculatorComponent
      */
     protected function percentForCalculate(): float
     {
-        return $this->downPayment / $this->amount * 100;
+        return $this->attributes['downPayment'] / $this->attributes['totalAmount'] * 100;
     }
     
     /**
@@ -104,7 +92,7 @@ class CalculatorComponent
 
         $percentForCalculate = $this->percentForCalculate();
 
-        return $model::byGreaterOrEqualMonths($this->period)
+        return $model::byGreaterOrEqualMonths($this->attributes['period'])
             ->byGreaterOrEqualPercent($percentForCalculate)
             ->findOne();
     }
@@ -112,63 +100,60 @@ class CalculatorComponent
     /**
      * Устанавливает свойства
      *
-     * @param CreditRequest $form
+     * @param array $attributes
      * @return void
      */
-    public function setAttributes(CreditRequest $form): void
+    public function pushAttributes(array $attributes = []): void
     {
-        $this->type        = $form->getAttribute('typeCalculator');
-        $this->amount      = $form->getAttribute('totalAmount');
-        $this->period      = $form->getAttribute('period');
-        $this->downPayment = $form->getAttribute('downPayment');
-
-        $calcModel = $this->getCalcModel();
-
-        $this->annualInterestRate = $calcModel['annual_rate'];
-        
-        $this->costMonth = $this->getCostMonth();
+        $this->attributes = array_merge($this->attributes, $attributes);
     }
     
     /**
      * Расчет
      * 
      * @param CreditRequest $form
-     * @return array
      */
-    public static function calculate(CreditRequest $form): array
+    public function calculate(CreditRequest $form): void
     {
+        $this->type = $form->getAttribute('typeCalculator');
         
-        $type = $form->getAttribute('typeCalculator');
+        $this->initStrategy();
+
+        $this->pushAttributes($form->getData());
+
+        $calcModel = $this->getCalcModel();
+
+        $this->pushAttributes([
+            'annualInterestRate' => $calcModel['annual_rate']
+        ]);
         
-        $calc = new static();
-        
-        $strategy = static::getStrategy($type);
+        $this->pushAttributes([
+            'costMonth' => $this->getCostMonth()
+        ]);
 
-        $calc->setStrategy($strategy);
+        $this->pushAttributes($this->strategy->calculate($this->attributes));
 
-        $calc->setAttributes($form);
-
-        $calc = $calc->strategy->calculate($calc);
-
-        return $calc->getResult();
+        $this->save();
     }
 
     /**
      * Возвращает стратегию
      *
-     * @param string $strategiesKey
-     * @return StrategyInterface
+     * @return void
      */
-    protected static function getStrategy(string $strategiesKey): StrategyInterface
+    protected function initStrategy(): void
     {
-        if (! isset(static::$strategies[$strategiesKey])) {
-            
-            throw new BadRequestException('Неверно указан тип калькулятора');
+        if (! array_key_exists($this->type, $this->strategies)) {
+            throw new \InvalidArgumentException('Неверно указан тип калькулятора');
         }
 
-        $strategy = static::$strategies[$strategiesKey];
+        $strategy = new $this->strategies[$this->type];
+        
+        if (! $strategy instanceof StrategyInterface) {
+            throw new \InvalidArgumentException('Тип расчета должен отвечать интерфейсу ' . StrategyInterface::class);
+        }
 
-        return new $strategy;
+        $this->strategy = new $this->strategies[$this->type];
     }
 
     /**
@@ -178,7 +163,7 @@ class CalculatorComponent
      */
     public function getInterestOverpayment(): int
     {
-        return $this->amount / 100 * $this->annualInterestRate;
+        return $this->attributes['totalAmount'] / 100 * $this->attributes['annualInterestRate'];
     }
 
     /**
@@ -188,7 +173,6 @@ class CalculatorComponent
      */
     public function getCostMonth(): int
     {
-
         return ceil($this->getInterestOverpayment() / 12);
     }
 
@@ -199,9 +183,14 @@ class CalculatorComponent
      */
     public function getTotalCost(): int
     {
-        return $this->amount - $this->downPayment + $this->getInterestOverpayment();
+        return $this->amount - $this->attributes['downPayment'] + $this->getInterestOverpayment();
     }
 
+
+    protected function save(): void
+    {
+        $this->resultContainer::setData($this->attributes);
+    }
     /**
      * Возвращает массив с результатом
      *
@@ -209,6 +198,7 @@ class CalculatorComponent
      */
     public function getResult(): array
     {
+        /*
         return [
             ['Переплата кредита в месяц'        => $this->costMonth],
             ['Переплата по процентам, рублей:'  => $this->getInterestOverpayment()], 
@@ -221,6 +211,7 @@ class CalculatorComponent
             ['Взнос клиента в месяц'  => $this->monthlyClientPayment],
             ['Взнос продавца в месяц' =>  $this->monthlySellerPayment]
         ];
+        */
     }
 
 }

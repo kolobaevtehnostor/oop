@@ -3,9 +3,8 @@
 namespace App\Components\Calculator\Strategies\Base;
 
 use Framework\Models\Base\BaseModel;
-use App\Components\Calculator\Strategies\Base\StrategyInterface;
 
-abstract class BaseStrategy implements StrategyInterface
+abstract class BaseStrategy
 {
     /**
      * @var BaseModel
