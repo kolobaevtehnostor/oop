@@ -31,7 +31,6 @@ $.fn.processSendForm = function (view, requestData) {
         onResponseDone: function (data) {
             $('.load-' + attributes.typeCalculator + '-result').html('');
 
-
             if ( data.length == 1) {
                 $('.load-' + attributes.typeCalculator + '-result').append(
                     '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
@@ -42,18 +41,20 @@ $.fn.processSendForm = function (view, requestData) {
                 return this;
             }
 
-            $.each(data, function(index, resultValue) {
-                $.each(resultValue, function(key, value){
-                    $('.load-' + attributes.typeCalculator + '-result').append(
-                        '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
-                            '<div>' +
-                            '<h6 class="my-0">' + key + '</h6>' +
-                            '</div>' +
-                            '<span class="text-muted">' +  value + '</span>' +
-                        '</li>'
-                    );
-                });
-            });
+            for (const key in data) {
+
+                const value = data[key];
+
+                $('.load-' + attributes.typeCalculator + '-result').append(
+                    '<li class="list-group-item d-flex justify-content-between lh-condensed">' +
+                        '<div>' +
+                        '<h6 class="my-0">' + key + '</h6>' +
+                        '</div>' +
+                        '<span class="text-muted">' +  value + '</span>' +
+                    '</li>'
+                );
+                
+            }
 
             return this;
         },

@@ -4,7 +4,7 @@ return [
     'grid_installment' => [
         1 => 
             [
-                'months' => 31,
+                'months' => 3,
                 'percent' => 10,
                 'annual_rate' => 1.1,
             ],

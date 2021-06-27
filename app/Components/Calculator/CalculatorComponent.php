@@ -30,14 +30,6 @@ class CalculatorComponent
         'monthlyClientPayment' => 0,
     ];
 
-/*
-    public $costForPeriod;
-    public $costForPeriodClient;
-    public $costForPeriodSeller;
-    public $monthlyPayment;
-    public $monthlySellerPayment;
-*/
-
     /**
      * @var StrategyInterface
      */
@@ -130,8 +122,9 @@ class CalculatorComponent
         $this->pushAttributes([
             'costMonth' => $this->getCostMonth()
         ]);
-
+        
         $this->pushAttributes($this->strategy->calculate($this->attributes));
+        
 
         $this->save();
     }
@@ -190,28 +183,6 @@ class CalculatorComponent
     protected function save(): void
     {
         $this->resultContainer::setData($this->attributes);
-    }
-    /**
-     * Возвращает массив с результатом
-     *
-     * @return array
-     */
-    public function getResult(): array
-    {
-        /*
-        return [
-            ['Переплата кредита в месяц'        => $this->costMonth],
-            ['Переплата по процентам, рублей:'  => $this->getInterestOverpayment()], 
-            ['Стоимость кредита в год:'         => $this->getTotalCost()],
-            ['Процент:'                         => $this->annualInterestRate], 
-
-            ['Долг клиента за ' . $this->period . ' месяцев'    => $this->costForPeriodClient],
-            ['Долг продавца за ' . $this->period . ' месяцев'   => $this->costForPeriodSeller],
-
-            ['Взнос клиента в месяц'  => $this->monthlyClientPayment],
-            ['Взнос продавца в месяц' =>  $this->monthlySellerPayment]
-        ];
-        */
     }
 
 }

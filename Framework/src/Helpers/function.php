@@ -43,3 +43,16 @@ function bind(string $key, $object) {
     
     $container->bind($key, $object);
 }
+
+
+/**
+ * Возвращает число в формате денег
+ *
+ * @param int $number
+ * @param string $currency
+ * @return string
+ */
+function printCurrencyRub(string $number, string $currency = ' Руб.'): string {
+
+    return number_format($number, 2, ',', ' ') . $currency;
+}

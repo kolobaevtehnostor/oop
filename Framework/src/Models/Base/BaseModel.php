@@ -3,8 +3,9 @@
 namespace Framework\Models\Base;
 
 use Framework\Models\Builder\Builder;
+use Framework\Componensts\Singletons;
 
-abstract class BaseModel 
+abstract class BaseModel extends Singletons
 {
     protected $tableName;
 
@@ -27,19 +28,6 @@ abstract class BaseModel
         
         $this->builder = new Builder($data);
     }
-    
-    /**
-    *
-    * @return void
-    */
-   public static function getInstance()
-   {
-       if (! (static::$instance instanceof static)) {
-           static::$instance = new static();
-       }
-       
-       return static::$instance;
-   }
 
     /**
      * Получаем сокуп метод

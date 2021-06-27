@@ -3,8 +3,9 @@
 namespace Framework\Http\Requests\Base;
 
 use Framework\Http\Requests\Base\Request;
+use Framework\Componensts\Singletons;
 
-class FormRequest
+class FormRequest extends Singletons
 {
     protected $request;
     
@@ -69,18 +70,5 @@ class FormRequest
     public function getData() 
     {
         return $this->data;
-    }
-
-    /**
-     * @return self
-     * @throws RuntimeException
-     */
-    public static function getInstance(): self
-    {
-        if (! (static::$instance instanceof static)) {
-            self::$instance = new static;
-        }
-
-        return static::$instance;
     }
 }

@@ -5,8 +5,9 @@ namespace Framework;
 use Framework\Http\Requests\Base\Request;
 use Framework\Config\Configuration;
 use App\Requests\CreditRequest;
+use Framework\Componensts\Singletons;
 
-class Container
+class Container extends Singletons
 {
     protected static $instance;
     
@@ -53,16 +54,4 @@ class Container
         $this->singletons[$key] = $object;
     }
 
-    /**
-     *
-     * @return self
-     */
-    public static function getInstance(): self
-    {
-        if (! static::$instance instanceof static) {
-            static::$instance = new static;
-        }
-        
-        return static::$instance;
-    }
 }

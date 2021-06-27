@@ -1,8 +1,9 @@
 <?php
 
 namespace Framework\Config;
+use Framework\Componensts\Singletons;
 
-class Configuration
+class Configuration extends Singletons
 {
     /**
      * @var array
@@ -30,19 +31,6 @@ class Configuration
                 $this->params = array_merge($this->params, $configFileParams); 
             }
         }
-    }
-
-    /**
-     * @return self
-     * @throws RuntimeException
-     */
-    public static function getInstance(): self
-    {
-        if (! (self::$instance instanceof self)) {
-            throw new \RuntimeException('Объект запроса не инициализирован.');
-        }
-
-        return self::$instance;
     }
 
     /**

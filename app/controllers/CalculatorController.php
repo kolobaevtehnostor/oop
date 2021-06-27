@@ -8,6 +8,8 @@ use App\Requests\CreditRequest;
 use App\RequestValidators\CreditRequestValidators;
 use App\Components\Calculator\CalculatorComponent;
 use App\Components\Calculator\Writer\ResultContainerWriterAll;
+use App\Components\Calculator\CommandContext\ContextCalculate;
+use App\Components\Calculator\CommandContext\CalculatorHandler;
 
 class CalculatorController extends BaseController
 {
@@ -33,6 +35,8 @@ class CalculatorController extends BaseController
      */
     public function actionCalculate($request): JsonResponse
     {
+        $contect = new ContextCalculate();
+
         $this->form = app(CreditRequest::class);
 
         $validator = new CreditRequestValidators($this->form);
@@ -47,10 +51,15 @@ class CalculatorController extends BaseController
         }
 
         $writer = ResultContainerWriterAll::class;
-        
-        $calculator = new CalculatorComponent($writer);
-        
-        $calculator->calculate($this->form);
+
+        $contect->setParam('writer',  ResultContainerWriterAll::class);
+
+        $contect->setParam('form',  $this->form);
+
+        $cmd = new CalculatorHandler();
+
+        $cmd->execute($contect);
+
 
         return $this->json($writer::all());
     }

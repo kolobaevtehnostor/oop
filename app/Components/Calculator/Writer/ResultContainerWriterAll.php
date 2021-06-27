@@ -3,8 +3,9 @@
 namespace App\Components\Calculator\Writer;
 
 use App\Components\Calculator\Writer\Base\ResultContainerInterface;
+use Framework\Componensts\Singletons;
 
-class ResultContainerWriterAll implements ResultContainerInterface
+class ResultContainerWriterAll extends Singletons implements ResultContainerInterface
 {
     protected $data = [];
 
@@ -26,20 +27,11 @@ class ResultContainerWriterAll implements ResultContainerInterface
     {
         $instance = static::getInstance();
 
-        return $instance->data;
+        return [
+            'Долг клиента за ' . $instance->data['period'] . ' мес.'  => printCurrencyRub($instance->data['costForPeriodClient']),
+            'Взнос клиента в месяц'                                   => printCurrencyRub($instance->data['monthlyClientPayment']),
+            'Долг продавца за ' . $instance->data['period'] . ' мес.' => printCurrencyRub($instance->data['costForPeriodClient']),
+            'Взнос продавца в месяц'                                 => printCurrencyRub($instance->data['monthlySellerPayment'])
+        ];
     }
-
-    /**
-     *
-     * @return self
-     */
-    public static function getInstance(): self
-    {
-        if (! static::$instance instanceof static) {
-            static::$instance = new static;
-        }
-        
-        return static::$instance;
-    }
-
 }

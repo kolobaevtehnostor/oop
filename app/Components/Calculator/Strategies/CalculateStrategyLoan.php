@@ -22,12 +22,15 @@ class CalculateStrategyLoan extends BaseStrategy implements StrategyInterface
      */
     function calculate(array $attributes = []): array
     {
-     //   dd($attributes);
+        $data = [
+            'costForPeriodClient'  => (($attributes['costMonth']) * $attributes['period']) + $attributes['totalAmount']
+        ];
+
         return [
             'costForPeriodSeller'  => 0,
             'monthlySellerPayment' => 0,
-            'costForPeriodClient'  => (($attributes['costMonth']) * $attributes['period']) + $attributes['totalAmount'],
-            'monthlyClientPayment' => ceil($attributes['costForPeriodClient'] / $attributes['period']),
+            'costForPeriodClient'  => $data['costForPeriodClient'],
+            'monthlyClientPayment' => ceil($data['costForPeriodClient'] / $attributes['period']),
         ];
     }
 

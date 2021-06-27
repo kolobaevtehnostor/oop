@@ -23,11 +23,16 @@ class CalculateStrategyInstallment extends BaseStrategy  implements StrategyInte
      */
     function calculate(array $attributes = []): array
     {
-        return [
+        $data = [
             'costForPeriodSeller'  => $attributes['costMonth'] * $attributes['period'],
-            'monthlySellerPayment' => ceil(attributes['costForPeriodSeller'] / $attributes['period']),
-            'costForPeriodClient'  => $attributes['totalAmount'],
-            'monthlyClientPayment' => ceil($attributes['costForPeriodClient'] / $attributes['period']),
+            'costForPeriodClient'  => $attributes['totalAmount']
+        ];
+
+        return [
+            'costForPeriodSeller'  => $data['costForPeriodSeller'],
+            'monthlySellerPayment' => ceil($data['costForPeriodSeller'] / $attributes['period']),
+            'costForPeriodClient'  => $data['costForPeriodClient'],
+            'monthlyClientPayment' => ceil($data['costForPeriodClient'] / $attributes['period']),
         ];
     }
 
