@@ -3,7 +3,7 @@
 namespace Framework\Http\Requests\Base;
 
 use Framework\Http\Requests\Base\Request;
-use Framework\Componensts\Singletons;
+use Framework\Components\Singletons;
 
 class FormRequest extends Singletons
 {

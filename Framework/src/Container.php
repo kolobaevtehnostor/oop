@@ -5,7 +5,7 @@ namespace Framework;
 use Framework\Http\Requests\Base\Request;
 use Framework\Config\Configuration;
 use App\Requests\CreditRequest;
-use Framework\Componensts\Singletons;
+use Framework\Components\Singletons;
 
 class Container extends Singletons
 {

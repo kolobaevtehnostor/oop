@@ -3,7 +3,7 @@
 namespace Framework\Models\Base;
 
 use Framework\Models\Builder\Builder;
-use Framework\Componensts\Singletons;
+use Framework\Components\Singletons;
 
 abstract class BaseModel extends Singletons
 {

@@ -1,7 +1,7 @@
 <?php
 
 namespace Framework\Config;
-use Framework\Componensts\Singletons;
+use Framework\Components\Singletons;
 
 class Configuration extends Singletons
 {

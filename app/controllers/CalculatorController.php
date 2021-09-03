@@ -57,8 +57,10 @@ class CalculatorController extends BaseController
         $contect->setParam('form',  $this->form);
 
         $cmd = new CalculatorHandler();
-        dd($contect);
-        dd($contect->getParam('writer', ''));
+        
+        $cmd->execute($contect);
+
+        dd($contect->getParam('writer', '')::all());
 //        $cmd->attach(new LoggableObserver());
 
 //        $cmd->execute($contect);

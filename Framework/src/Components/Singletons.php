@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Componensts;
+namespace Framework\Components;
 
 class Singletons
 {
