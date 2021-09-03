@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\CommandContext\Base;
+namespace Framework\Command\Base;
 
-use Framework\CommandContext\Base\CommandContext;
+use Framework\Command\CommandContext;
 
 abstract class BaseCommand
 {

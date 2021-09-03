@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\CommandContext\Base;
+namespace Framework\Command;
 
 class CommandContext 
 {
@@ -24,7 +24,7 @@ class CommandContext
      * @param string $key
      * @return void
      */
-    public function getParam(string $key, $default)
+    public function getParam(string $key, $default='-')
     {
         if (isset($this->params[$key])) {
 

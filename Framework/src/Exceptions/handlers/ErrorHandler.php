@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Exceptions;
+namespace Framework\Exceptions\Handlers;
 
 use Framework\Exceptions\NotFoundException;
 use Framework\Views\View;
@@ -20,12 +20,16 @@ class ErrorHandler
         }
         
         if ($error instanceof \Throwable) {
-            return View::compose('errors/throwable', [
-                'errorCode'    => $this->printCodeError($error->getCode()),
-                'errorFile'    => $error->getFile(),
-                'errorLine'    => $error->getLine(),
-                'errorMessage' => $error->getMessage (),
-            ]);
+            
+            return View::compose(
+                'errors/throwable', 
+                [
+                    'errorCode' => $this->printCodeError($error->getCode()),
+                    'errorFile' => $error->getFile(),
+                    'errorLine' => $error->getLine(),
+                    'errorMessage' => $error->getMessage(),
+                ]
+            );
         }
     }
 

@@ -94,7 +94,7 @@ class BaseView
     protected function create(): BaseView
     {
         if (! file_exists($this->filePath)) {
-            throw new \RuntimeException('Файл не существует');
+            throw new \RuntimeException('Файл "' . $this->filePath . '" не существует');
         }
 
         ob_start();

@@ -5,7 +5,7 @@ namespace Framework\Http;
 use Framework\Routers\Router;
 use Framework\Http\Responses\Response;
 use Framework\Http\Requests\Base\Request;
-use Framework\Exceptions\ErrorHandler;
+use Framework\Exceptions\Handlers\ErrorHandler;
 use App\Config\Routes;
 
 class Kernel

@@ -1,30 +1,24 @@
-<div class="page-wrap d-flex flex-row align-items-center" style="min-height: 70vh;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12 text-center">
-                <span class="display-1 d-block">
-                    <?= $this->errorCode ?>
-                </span>
-                <br>
-                <div class="mb-4">
-                    Ошибка:
-                    <strong>
-                        <?= $this->errorMessage ?>
-                    </strong>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Ошибка!</h1>
+                <h2><?= $this->errorCode ?></h2>
+                <div class="error-details">
+                  В файле  <?= $this->errorFile ?> в строке  <?= $this->errorLine ?>
                 </div>
-                <div class="mb-4 text-left">
-                    В файле:
-                    <strong>
-                        <?= $this->errorFile ?>
-                    </strong>
-                    <br>
-                    в строке:
-                    <strong>
-                        <?= $this->errorLine ?>
-                    </strong>
+                
+                <div class="error-details">
+                    <?= $this->errorMessage ?>
                 </div>
-                <a href="http://oop.com/index.php/calculator" class="btn btn-link">Back to Home</a>
             </div>
         </div>
     </div>
 </div>
+

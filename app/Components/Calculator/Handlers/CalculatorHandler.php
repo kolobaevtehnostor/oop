@@ -1,9 +1,9 @@
 <?php 
 
-namespace App\Components\Calculator\CommandContext;
+namespace App\Components\Calculator\Handlers;
 
-use Framework\CommandContext\Base\BaseCommand;
-use Framework\CommandContext\Base\CommandContext;
+use Framework\Command\Base\BaseCommand;
+use Framework\Command\CommandContext;
 use App\Components\Calculator\CalculatorComponent;
 
 class CalculatorHandler extends BaseCommand 

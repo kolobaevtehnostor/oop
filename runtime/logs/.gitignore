@@ -1,0 +1,4 @@
+*
+!.gitignore
+!calculation_results
+!calculation_results/.gitkeep

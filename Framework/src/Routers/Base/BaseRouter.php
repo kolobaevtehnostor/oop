@@ -7,6 +7,7 @@ use Framework\Http\Responses\Response;
 use Framework\Http\Responses\JsonResponse;
 use Framework\Exception\HttpException;
 use Framework\Exceptions\NotFoundException;
+use Framework\Exceptions\Handlers\ErrorHandler;
 
 abstract class BaseRouter
 {
