@@ -60,7 +60,6 @@ class CalculatorController extends BaseController
         
         $cmd->execute($contect);
 
-        dd($contect->getParam('writer', '')::all());
 //        $cmd->attach(new LoggableObserver());
 
 //        $cmd->execute($contect);
@@ -85,6 +84,7 @@ class CalculatorController extends BaseController
     */
         $result = $contect->getParam('result', '');
 
+        return $this->json($contect->getParam('writer', '')::all());
         return $this->json($result);
 
         //return $this->json($writer::all());

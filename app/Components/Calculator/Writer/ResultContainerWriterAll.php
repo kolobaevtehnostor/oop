@@ -26,7 +26,7 @@ class ResultContainerWriterAll extends Singletons implements ResultContainerInte
     public static function all(): array
     {
         $instance = static::getInstance();
-dd($instance->data);
+        
         return [
             'Долг клиента за ' . $instance->data['period'] . ' мес.'  => printCurrencyRub($instance->data['costForPeriodClient']),
             'Взнос клиента в месяц'                                   => printCurrencyRub($instance->data['monthlyClientPayment']),
