@@ -6,7 +6,7 @@ use Framework\Command\CommandContext;
 
 abstract class BaseCommand
 {
-    protected $context;
+    public $context;
 
     /**
      * Выполнение паттерна команда

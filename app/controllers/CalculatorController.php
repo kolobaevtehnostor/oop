@@ -10,6 +10,7 @@ use App\Components\Calculator\CalculatorComponent;
 use App\Components\Calculator\Writer\ResultContainerWriterAll;
 use Framework\Command\CommandContext;
 use App\Components\Calculator\Handlers\CalculatorHandler;
+use App\Components\Calculator\Observers\LoggableObserver;
 
 class CalculatorController extends BaseController
 {
@@ -58,33 +59,14 @@ class CalculatorController extends BaseController
 
         $cmd = new CalculatorHandler();
         
+        $cmd->attach(new LoggableObserver());
+        
         $cmd->execute($contect);
 
-//        $cmd->attach(new LoggableObserver());
+        $cmd->notify();
 
-//        $cmd->execute($contect);
-
-//        $cmd->notify();
-
-        /*
-                1 Сделать логирование результатов и запросов на расчет калькулятора
-                $log->channel('logs/calculation_results')->write($fileName, $logData);
-                2 Добавить логирование ошибок приложения
-         */
-
-    /*
-        $log = new Log();
-        $log->write($data);
-
-        $xml = new..
-        $xml->gen($log);
-
-        $sendManager = new Log();
-        $sendManager->send($data, $url);
-    */
         $result = $contect->getParam('result', '');
 
-        return $this->json($contect->getParam('writer', '')::all());
         return $this->json($result);
 
         //return $this->json($writer::all());
