@@ -20,7 +20,7 @@ class LoggableObserver implements \SplObserver
             $this->message .= $key . ': ' . $item . ' | '; 
         }
         
-        Log::info('Результат: ' . $this->message);
+        Log::info('Результат: ' . $this->message, 'ldjfsdflds');
 
     }
 }

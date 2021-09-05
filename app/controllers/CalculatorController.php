@@ -68,7 +68,5 @@ class CalculatorController extends BaseController
         $result = $contect->getParam('result', '');
 
         return $this->json($result);
-
-        //return $this->json($writer::all());
     }
 }
