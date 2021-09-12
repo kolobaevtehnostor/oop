@@ -12,7 +12,7 @@ require_once 'Framework/src/Helpers/function.php';
 use Framework\Console\Kernel;
 
 $commandsAlias = [
-    'help' => 'App\Console\Commands\HelpCommand',
+    'help'      => 'App\Console\Commands\HelpCommand',
     'calculate' => 'App\Console\Commands\CalculateCommand'
 ];
 
@@ -33,7 +33,7 @@ foreach ($argv as $arg) {
 
 $command = $commandsAlias['help'];
 
-if (array_key_exists ($argv[1], $commandsAlias)) {
+if (! empty($argv[1]) && array_key_exists( $argv[1], $commandsAlias)) {
     $command = $commandsAlias[$argv[1]];
 }
 
