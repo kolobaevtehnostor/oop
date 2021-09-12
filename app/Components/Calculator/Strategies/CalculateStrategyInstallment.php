@@ -2,7 +2,7 @@
 
 namespace App\Components\Calculator\Strategies;
 
-use Framework\Components\\Strategies\Base\BaseStrategy;
+use Framework\Components\Strategies\Base\BaseStrategy;
 use App\Components\Calculator\CalculatorComponent;
 use Framework\Models\Base\BaseModel;
 use App\Models\GridInstallment;
