@@ -8,7 +8,7 @@ use App\Requests\CreditRequest;
 use App\RequestValidators\CreditRequestValidators;
 use App\Components\Calculator\Handlers\CalculatorHandler;
 use App\Components\Calculator\Observers\LoggableObserver;
-use App\Components\Calculator\Writer\ResultContainerWriterAll;
+use App\Components\Calculator\Writer\ConsoleResultContainerWriterAll;
 use Framework\Console\ConsoleInputHandler;
 
 class CalculateCommand implements Command
@@ -33,19 +33,20 @@ class CalculateCommand implements Command
         $contect = new CommandContext();
 
         $this->form = app(CreditRequest::class);
-
+//dd( $this->form );
         $validator = new CreditRequestValidators($this->form);
 
         $validator->validate();
 
         if ($validator->hasErrors()) {
-            dd($validator->getErrors());
-            //echo $validator->getErrors();
+           echo "\033[31m" . implode("\n", $validator->getErrors()) . "\033[0m\n";
+
+           return;
         }
 
-        $writer = ResultContainerWriterAll::class;
+        $writer = ConsoleResultContainerWriterAll::class;
 
-        $contect->setParam('writer',  ResultContainerWriterAll::class);
+        $contect->setParam('writer',  ConsoleResultContainerWriterAll::class);
 
         $contect->setParam('form',  $this->form);
 
@@ -58,7 +59,9 @@ class CalculateCommand implements Command
         $cmd->notify();
 
         $result = $contect->getParam('result', '');
-        dd($result);
-        return $this->json($result);
+
+        echo "\033[32m" . implode("\n", $result) . "\033[0m\n";
+        
+        return;
     }
 }

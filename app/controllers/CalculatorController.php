@@ -40,6 +40,7 @@ class CalculatorController extends BaseController
 
         $this->form = app(CreditRequest::class);
 
+       // dd( $this->form );
         $validator = new CreditRequestValidators($this->form);
 
         $validator->validate();
