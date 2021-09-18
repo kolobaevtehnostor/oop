@@ -8,11 +8,15 @@ class Configuration extends Singletons
     /**
      * @var array
      */
-    protected $params = [];
+    public $params = [
+        'dir' => ROOT_PATH . 'app/config'
+    ];
 
     public function __construct() 
     {
-        $this->dirToArray();
+       // $this->setParamDir(ROOT_PATH . 'app/config');
+       // $this->getParam('dir');
+       // $this->dirToArray();
     }
     /**
      * Перебирает все файлы
@@ -20,14 +24,14 @@ class Configuration extends Singletons
      * @param string $dir
      * @return void
      */
-    function dirToArray(string $dir = ROOT_PATH . 'app/config'): void
+    public function dirToArray(): void
     {
-        $folderFiles = scandir($dir);
+        $folderFiles = scandir($this->getParam('dir'));
 
         foreach ($folderFiles as $key => $value)
         {
             if (! in_array($value,array('.', '..'))) {
-                $configFileParams = include($dir . '/' . $value);
+                $configFileParams = include($this->getParam('dir') . '/' . $value);
                 $this->params = array_merge($this->params, $configFileParams); 
             }
         }
@@ -47,6 +51,17 @@ class Configuration extends Singletons
         }
 
         throw new \Exception('Параметр конфига не найден');
+    }
+
+    /**
+     * Возвращает параметр конфига
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function setParamDir(string $dir = ROOT_PATH . 'app/config')
+    {
+        $this->params['dir'] = $dir;
     }
 
 }

@@ -11,7 +11,12 @@ require_once ROOT_PATH . 'Framework/src/Helpers/function.php';
 
 use Framework\Routers\Router;
 use Framework\Http\Requests\Base\Request;
+use Framework\Http\Requests\Base\RequestInterface;
 use Framework\Http\Kernel;
+use Framework\Config\Configuration;
+
+Configuration::getInstance()->dirToArray();
+bind(Configuration::class, Configuration::getInstance());
 
 $routes = include(ROOT_PATH . 'routes/web.php');
 
@@ -23,7 +28,7 @@ $kernel = new Kernel($router);
 
 $request = new Request($_SERVER, $_GET, $_POST);
 
-bind(Request::class, $request);
+bind(RequestInterface::class, $request);
 
 $response = $kernel->handle($request);
 

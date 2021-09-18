@@ -2,7 +2,7 @@
 
 namespace Framework\Http\Requests\Base;
 
-class Request
+class Request implements RequestInterface
 {
     protected static $instance;
     
@@ -24,7 +24,7 @@ class Request
     }
 
     /**
-     * @return mixed
+     * @see RequestInterface
      */
     public function server(string $attributeName, $default = null)
     {
@@ -37,7 +37,7 @@ class Request
     }
 
     /**
-     * @return mixed
+     * @see RequestInterface
      */
     public function get(string $attributeName, $default = null)
     {
@@ -55,7 +55,7 @@ class Request
     }
 
     /**
-     * @return mixed
+     *  @see RequestInterface
      */
     public function post(string $attributeName, $default = null)
     {
@@ -73,9 +73,7 @@ class Request
     }
 
     /**
-     * Есть ли get
-     *
-     * @return boolean
+     *  @see RequestInterface
      */
     public function isGet(): bool
     {
@@ -83,9 +81,7 @@ class Request
     }
 
     /**
-     * Есть ли post
-     *
-     * @return boolean
+     *  @see RequestInterface
      */
     public function isPost(): bool
     {
@@ -93,10 +89,7 @@ class Request
     }
 
     /**
-     * Проверяет присутствие в get
-     *
-     * @param string $attributeName
-     * @return boolean
+     *  @see RequestInterface
      */
     public function isByGet(string $attributeName): bool
     {
@@ -104,10 +97,7 @@ class Request
     }
 
     /**
-     * Проверяет присутствие в post
-     *
-     * @param string $attributeName
-     * @return boolean
+     *  @see RequestInterface
      */
     public function isByPost(string $attributeName): bool
     {
@@ -115,10 +105,7 @@ class Request
     }
 
     /**
-     * Проверяет присутствие в server
-     *
-     * @param string $attributeName
-     * @return boolean
+     *  @see RequestInterface
      */
     public function isByServer(string $attributeName): bool
     {
@@ -126,8 +113,7 @@ class Request
     }
 
     /**
-     * @return self
-     * @throws RuntimeException
+     *  @see RequestInterface
      */
     public static function getInstance(): self
     {
@@ -139,9 +125,7 @@ class Request
     }
 
     /**
-     * Возвращает url
-     *
-     * @return string
+     *  @see RequestInterface
      */
     public function getUrlPath(): string
     {
@@ -151,5 +135,4 @@ class Request
 
         return $url['path'];
     } 
-
 }

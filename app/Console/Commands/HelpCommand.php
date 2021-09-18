@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Framework\Console\Commands\Base\Command;
+use Framework\Console\ConsoleInputHandler;
 
 class HelpCommand implements Command
 {
@@ -11,9 +12,8 @@ class HelpCommand implements Command
      */
     protected $message = '';
 
-    public function handle(array $arg = []): void
+    public function handle(ConsoleInputHandler $arg): void
     {
-        
         $this->message = 
             "\n\033[33m Команды \033[0m  \033[33m                          Описание \033[0m \n\n" . 
             "\033[32m help \033[0m                               Выводит список команд \n" . 

@@ -13,9 +13,10 @@ class Singletons
     public static function getInstance(): self
     {
         if (! static::$instance instanceof static) {
-            static::$instance = new static;
+            
+            static::$instance = new static();
         }
-        
+
         return static::$instance;
     }
 }

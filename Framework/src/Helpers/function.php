@@ -27,9 +27,22 @@ function app(string $key) {
  * @return mixed
  */
 function getConfig(string $key) {
-   $config = app(Configuration::class);
+    $config = app(Configuration::class);
     
     return $config->getParam($key);
+}
+
+/**
+ * Возвращает свойство конфигурации
+ *
+ * @param string $key
+ * @return mixed
+ */
+function setConfigParamDir(string $value) {
+    
+    $config = app(Configuration::class);
+    
+    $config->setParamDir($value);
 }
 
 /**

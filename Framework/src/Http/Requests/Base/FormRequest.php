@@ -2,7 +2,7 @@
 
 namespace Framework\Http\Requests\Base;
 
-use Framework\Http\Requests\Base\Request;
+use Framework\Http\Requests\Base\RequestInterface;
 use Framework\Components\Singletons;
 
 class FormRequest extends Singletons
@@ -17,8 +17,7 @@ class FormRequest extends Singletons
 
     public function __construct() 
     {
-        // рассказать про DI Container
-        $this->request = app(Request::class);
+        $this->request = app(RequestInterface::class);
 
         $this->load();
     }

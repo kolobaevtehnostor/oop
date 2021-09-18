@@ -10,21 +10,23 @@ use Framework\Exceptions\Handlers\ErrorHandler;
 use App\Config\Routes;
 */
 
+use Framework\Http\Requests\Base\RequestInterface;
+
 class Kernel
 {
-    protected $commandClass;
+    protected $router;
 
-    public function __construct(string $commandClass)
+    public function __construct(array $router = [])
     {
-        $this->commandClass = $commandClass;
+        $this->router = $router;
     }
     
-    protected function startCommand(array $attr = []): string
+    protected function startCommand(RequestInterface $request): string
     {
         try {
+            $command = new $this->router[$request->getComandName()];
 
-            $command = new $this->commandClass;
-            $command->handle($attr);
+            $command->handle($request);
 
             return $command->getMessage();
             
@@ -47,8 +49,8 @@ class Kernel
 
     }
     
-    public function handle(array $attr = []): string
+    public function handle(RequestInterface $request): string
     {
-       return $this->startCommand($attr);
+       return $this->startCommand($request);
     }
 }

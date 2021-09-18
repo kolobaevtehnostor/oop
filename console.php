@@ -10,39 +10,22 @@ require_once 'vendor/autoload.php';
 require_once 'Framework/src/Helpers/function.php';
 
 use Framework\Console\Kernel;
+use Framework\Console\ConsoleInputHandler;
+use Framework\Http\Requests\Base\RequestInterface;
+use Framework\Config\Configuration;
 
-$commandsAlias = [
-    'help'      => 'App\Console\Commands\HelpCommand',
-    'calculate' => 'App\Console\Commands\CalculateCommand'
-];
+$routes = include('routes/console.php');
 
+Configuration::getInstance()->params['dir'] = 'app/config';
+Configuration::getInstance()->dirToArray();
+bind(Configuration::class, Configuration::getInstance());
 
-$options = [];
+$kernel = new Kernel($routes);
 
-foreach ($argv as $arg) {
-    $option = explode("=", $arg);
+$request = new ConsoleInputHandler($_SERVER, $argv);
 
-    if ('-' == substr($arg, 0, 1)) {
-        $options[$option[0]] = true;
-    }
+bind(RequestInterface::class, $request);
 
-    if (isset($option[1])) {
-        $options[$option[0]] = $option[1];
-    }
-}
+$status = $kernel->handle($request);
 
-$command = $commandsAlias['help'];
-
-if (! empty($argv[1]) && array_key_exists( $argv[1], $commandsAlias)) {
-    $command = $commandsAlias[$argv[1]];
-}
-
-$kernel = new Kernel($command);
-
-echo $kernel->handle($options);
-
-//$response = $kernel->handle($request);
-
-//$response->send();
-
-exit();
+exit($status);

@@ -4,6 +4,7 @@ namespace Framework\Models\Base;
 
 use Framework\Models\Builder\Builder;
 use Framework\Components\Singletons;
+use Framework\Config\Configuration;
 
 abstract class BaseModel extends Singletons
 {
@@ -23,7 +24,7 @@ abstract class BaseModel extends Singletons
     public function __construct() 
     {
         $this->tableName = $this->getTableName();
-
+        
         $data = getConfig('grid_' . $this->tableName);
         
         $this->builder = new Builder($data);
