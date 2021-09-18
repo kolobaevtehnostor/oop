@@ -33,7 +33,7 @@ class CalculateCommand implements Command
         $contect = new CommandContext();
 
         $this->form = app(CreditRequest::class);
-//dd( $this->form );
+        
         $validator = new CreditRequestValidators($this->form);
 
         $validator->validate();
