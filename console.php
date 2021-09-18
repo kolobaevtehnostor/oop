@@ -17,7 +17,9 @@ use Framework\Config\Configuration;
 $routes = include('routes/console.php');
 
 Configuration::getInstance()->params['dir'] = 'app/config';
+
 Configuration::getInstance()->dirToArray();
+
 bind(Configuration::class, Configuration::getInstance());
 
 $kernel = new Kernel($routes);
