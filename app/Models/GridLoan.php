@@ -36,7 +36,7 @@ class GridLoan extends BaseModel
      */
     public function getTableName(): string
     {
-        return 'loan';
+        return 'calculator_loan';
     }
     /**
      * Возвращает по период месяцы

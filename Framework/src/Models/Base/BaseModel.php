@@ -2,7 +2,7 @@
 
 namespace Framework\Models\Base;
 
-use Framework\Models\Builder\Builder;
+use Framework\Models\Builder\BuilderPDO;
 use Framework\Components\Singletons;
 use Framework\Config\Configuration;
 
@@ -25,9 +25,11 @@ abstract class BaseModel extends Singletons
     {
         $this->tableName = $this->getTableName();
         
-        $data = getConfig('grid_' . $this->tableName);
+        //$data = getConfig('grid_' . $this->tableName);
         
-        $this->builder = new Builder($data);
+        $this->builder = new BuilderPDO();
+
+        $this->builder->setQueryToTable($this->tableName);
     }
 
     /**

@@ -14,9 +14,13 @@ use Framework\Http\Requests\Base\Request;
 use Framework\Http\Requests\Base\RequestInterface;
 use Framework\Http\Kernel;
 use Framework\Config\Configuration;
+use Framework\Config\DatabaseConnect;
 
-Configuration::getInstance()->dirToArray();
-bind(Configuration::class, Configuration::getInstance());
+$dbConnect = DatabaseConnect::getInstance();
+$dbConnect->connect();
+$dbConnect = DatabaseConnect::getInstance();
+
+//dd(ROOT_PATH . 'app/database.php');
 
 $routes = include(ROOT_PATH . 'routes/web.php');
 

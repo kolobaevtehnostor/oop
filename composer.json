@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "twbs/bootstrap": "4.0.0"
+        "twbs/bootstrap": "4.0.0",
+        "robmorgan/phinx": "^0.11.7"
     },
     "autoload": {
         "psr-4": {
