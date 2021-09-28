@@ -35,7 +35,7 @@ class GridInstallment extends BaseModel
      */
     public function getTableName(): string
     {
-        return 'installment';
+        return 'calculator_installment';
     }
     
     /**
