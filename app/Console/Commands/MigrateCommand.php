@@ -15,6 +15,8 @@ class MigrateCommand implements Command
     public function handle(ConsoleInputHandler $arg): void
     {
         $this->message = exec('php vendor/bin/phinx migrate');
+
+        echo "\n" . $this->message . "\n";
     }
     
     public function getMessage(): string

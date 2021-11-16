@@ -81,8 +81,11 @@ class CalculatorComponent
     protected function getCalcModel(): array
     {
         $model = $this->strategy->getModel();
-
+        
         $percentForCalculate = $this->percentForCalculate();
+
+        $model::byGreaterOrEqualMonths($this->attributes['period'])
+            ->byGreaterOrEqualPercent($percentForCalculate);
 
         return $model::byGreaterOrEqualMonths($this->attributes['period'])
             ->byGreaterOrEqualPercent($percentForCalculate)

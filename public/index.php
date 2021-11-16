@@ -18,9 +18,6 @@ use Framework\Config\DatabaseConnect;
 
 $dbConnect = DatabaseConnect::getInstance();
 $dbConnect->connect();
-$dbConnect = DatabaseConnect::getInstance();
-
-//dd(ROOT_PATH . 'app/database.php');
 
 $routes = include(ROOT_PATH . 'routes/web.php');
 
@@ -39,3 +36,7 @@ $response = $kernel->handle($request);
 $response->send();
 
 exit();
+
+/*
+Миграции сделать красивыми
+*/

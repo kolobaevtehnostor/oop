@@ -2,15 +2,16 @@
 
 namespace Framework\Models\Base;
 
-use Framework\Models\Builder\BuilderPDO;
+use Framework\Models\Builder\PDO\Builder;
 use Framework\Components\Singletons;
 use Framework\Config\Configuration;
+use Framework\Components\Connection;
 
 abstract class BaseModel extends Singletons
 {
-    protected $tableName;
+    public $builder;
 
-    protected $builder;
+    protected $tableName;
 
     protected static $instance;
 
@@ -25,11 +26,7 @@ abstract class BaseModel extends Singletons
     {
         $this->tableName = $this->getTableName();
         
-        //$data = getConfig('grid_' . $this->tableName);
-        
-        $this->builder = new BuilderPDO();
-
-        $this->builder->setQueryToTable($this->tableName);
+        $this->builder = new Builder($this->tableName);
     }
 
     /**
@@ -139,7 +136,9 @@ abstract class BaseModel extends Singletons
      */
     public function findOne()
     {
-        return $this->builder->findOne();
+        $connect = new Connection();
+
+        return $connect->select($this->builder)->one();
     }
     
     /**
@@ -153,5 +152,4 @@ abstract class BaseModel extends Singletons
     {
         return $this->builder->findAll();
     }
-    
 }
