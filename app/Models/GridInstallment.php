@@ -37,6 +37,14 @@ class GridInstallment extends BaseModel
     {
         return 'calculator_installment';
     }
+
+    /**
+     * @see BaseModel 
+     */
+    public function getModelDtoClass(): string
+    {
+        return 'App\Models\GridInstallmentDTO';
+    }
     
     /**
      * Возвращает по период месяцы

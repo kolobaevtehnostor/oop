@@ -9,36 +9,38 @@ class Connection {
     
     protected $db;
     protected $builder;
+    protected $modelDtoClass;
 
     public function __construct() 
     {
         $this->db = DatabaseConnect::getInstance()->getConnection();
     }
 
-    public function select(Builder $builder): self
+    public function select(Builder $builder, string $modelDtoClass): self
     {
         $this->builder = $builder;
+        $this->modelDtoClass = $modelDtoClass;
 
         return $this;
     }
 
-    public function one(): array 
+    public function one() 
     {
-        return $this->getQuery()->fetch();
+        return $this->getQuery()->fetchAll(\PDO::FETCH_CLASS, $this->modelDtoClass)[0];
     }
     
     public function all(): array 
     {
-        return $this->getQuery()->fetchAll();
+        return $this->getQuery()->fetchAll(\PDO::FETCH_CLASS, $this->modelDtoClass);
     }
 
     protected function getQuery()
     {
-        $safeSql = $this->builder->getSafeSql();
+        $command = $this->builder->getSafeSql();
         
-        $stmt = $this->db->prepare($safeSql['query']);
-        $stmt->execute($safeSql['whereData']);
+        $statement = $this->db->prepare($command->getSql());
+        $statement->execute($command->getBindings());
         
-        return $stmt;
+        return $statement;
     }
 }
