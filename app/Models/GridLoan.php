@@ -38,6 +38,15 @@ class GridLoan extends BaseModel
     {
         return 'calculator_loan';
     }
+    
+    /**
+     * @see BaseModel 
+     */
+    public function getModelDtoClass(): string
+    {
+        return 'App\Models\GridInstallmentDTO';
+    }
+
     /**
      * Возвращает по период месяцы
      *

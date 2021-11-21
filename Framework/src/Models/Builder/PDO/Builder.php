@@ -3,6 +3,7 @@
 namespace Framework\Models\Builder\PDO;
 
 use Framework\Config\DatabaseConnect;
+use Framework\Models\Builder\PDO\Command;
 
 class Builder
 {
@@ -50,13 +51,13 @@ class Builder
      *
      * @return string
      */
-    public function getSafeSql(): array
+    public function getSafeSql(): Command
     {
         $this->makeSql();
 
-        return [
-            'query' => $this->query,
-            'whereData' => $this->whereData,
-        ];
+        return new Command(
+            $this->query,
+            $this->whereData
+        );
     }
 }

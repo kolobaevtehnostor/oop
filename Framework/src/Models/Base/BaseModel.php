@@ -9,6 +9,8 @@ use Framework\Components\Connection;
 
 abstract class BaseModel extends Singletons
 {
+    public $dtoModelClass;
+
     public $builder;
 
     protected $tableName;
@@ -21,10 +23,19 @@ abstract class BaseModel extends Singletons
      * @return string
      */
     abstract function getTableName(): string;
+    
+    /**
+     * Возвращает дто класс модели
+     *
+     * @return string
+     */
+    abstract function getModelDtoClass(): string;
 
     public function __construct() 
     {
         $this->tableName = $this->getTableName();
+
+        $this->dtoModelClass = $this->getModelDtoClass();
         
         $this->builder = new Builder($this->tableName);
     }
@@ -138,7 +149,7 @@ abstract class BaseModel extends Singletons
     {
         $connect = new Connection();
 
-        return $connect->select($this->builder)->one();
+        return $connect->select($this->builder, $this->getModelDtoClass())->one();
     }
     
     /**

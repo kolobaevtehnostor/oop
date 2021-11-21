@@ -78,10 +78,10 @@ class CalculatorComponent
      *
      * @return BaseModel
      */
-    protected function getCalcModel(): array
+    protected function getCalcModel()
     {
         $model = $this->strategy->getModel();
-        
+
         $percentForCalculate = $this->percentForCalculate();
 
         $model::byGreaterOrEqualMonths($this->attributes['period'])
@@ -117,9 +117,9 @@ class CalculatorComponent
         $this->pushAttributes($form->getData());
 
         $calcModel = $this->getCalcModel();
-
+        
         $this->pushAttributes([
-            'annualInterestRate' => $calcModel['annual_rate']
+            'annualInterestRate' => $calcModel->annual_rate
         ]);
         
         $this->pushAttributes([
